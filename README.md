@@ -1,45 +1,66 @@
 # MMCockpit
 
-Das **Makermobile Buchungstool** („Cockpit Plug-In“) macht die Vergabe der Makermobile sichtbar und ersetzt die bisherige Excel-Pflege durch eine kleine Web-App.
+Das **Makermobile Buchungstool** macht die Vergabe der Makermobile sichtbar und ersetzt die bisherige Excel-Pflege durch eine kleine Web-App.
 
-> Status: **Beta** – läuft rein im Browser, zunächst auf GitHub Pages, später auf eurem Webspace.
+> Läuft rein im Browser (zunächst auf GitHub Pages, später auf dem Webspace).
 
 ## Funktionen
 
 - **Kalenderansicht**: Wochenraster pro Makermobil, Buchungen farbig nach Status.
-- **Listenansicht**: alle Buchungen mit Suche und Filter (Fahrzeug / Status), direkt bearbeitbar.
-- **Fahrzeugverwaltung**: Makermobile anlegen, umbenennen, löschen.
-- **Buchungen**: Von/Bis-Zeitraum, verantwortliche Person, Organisation/Schule, Kontakt, Zweck, Notiz und Status (`angefragt`, `bestätigt`, `abgelehnt`, `abgeschlossen`).
-- **Konfliktprüfung**: Überschneidungen desselben Fahrzeugs werden beim Speichern erkannt.
-- **Import / Export**: CSV (semikolongetrennt, Excel-kompatibel) für den Umstieg von der bisherigen Excel-Liste; zusätzlich JSON-Backup/Restore.
-- **Lokale Speicherung**: alle Daten liegen im `localStorage` des Browsers – kein Server, kein Login.
+- **Zeitstrahl-Ansicht**: Gantt-ähnliche Übersicht über mehrere Wochen, zoombar, selbstgebaut (keine externe Lib).
+- **Listenansicht**: alle Buchungen mit Suche, Filter (Fahrzeug/Status) und Schnell-Statuswechsel.
+- **Fahrzeugverwaltung**: Makermobile anlegen, umbenennen, löschen – jedes mit eigener Farbe.
+- **Buchungsformular**: Von/Bis, Person, Organisation/Schule, Kontakt, Zweck, Notiz, Status (`angefragt`, `bestätigt`, `abgelehnt`, `abgeschlossen`) inkl. **Kollisionsprüfung** bei Überschneidungen.
+- **Wartungsmodus**: Sperrt neue Buchungen und zeigt ein Banner (Schalter oben rechts).
+- **Import / Export**: CSV (semikolongetrennt, Excel-kompatibel), **PDF-Export** (jsPDF, lazily via CDN), JSON-Backup/Restore.
+- **Feedback-Formular**: Versand über `mailto:` an die Verwaltung.
+- **Lokale Speicherung**: alle Daten im `localStorage` – kein Server, kein Login.
 
-## Als Beta auf GitHub Pages nutzen
+## Struktur (modular)
+
+```
+index.html          Struktur
+styles.css          Layout (Makermobil-Design)
+app.js              Einstiegspunkt, verbindet alle Module
+js/core.js          Datenmodell, Persistenz, gemeinsame Helfer
+js/ui.js            Tabs, Fahrzeug-Selects, Wartungsmodus
+js/vehicles.js      Fahrzeugverwaltung
+js/booking.js       Buchungs-Dialog + Kollisionsprüfung
+js/calendar.js      Wochen-Kalender
+js/timeline.js      Zeitstrahl-Ansicht (selbstgebaut)
+js/list.js          Listenansicht
+js/importexport.js  CSV/JSON Import & Export
+js/pdf.js           PDF-Export (jsPDF via CDN)
+js/feedback.js      Feedback per mailto:
+beispiel-buchungen.csv  Beispiel-CSV zum Testen des Imports
+```
+
+Die Module sind bewusst framework-frei gehalten, damit das Tool später als **WordPress-Plugin** oder mit **Backend (MySQL)** erweitert werden kann. `core.js` kapselt den Datenzugriff – ein späteres Backend muss nur die Funktionen aus `core.js` (loadState/saveState) durch API-Aufrufe ersetzen.
+
+## Auf GitHub Pages nutzen
 
 1. Repo forken oder direkt hier nutzen.
-2. In den Repo-Settings unter **Settings → Pages** als Source **Deploy from a branch** wählen, Branch `main` und Ordner `/ (root)` auswählen.
-3. Die App ist danach unter `https://<org>.github.io/MMCockpit/` erreichbar.
+2. **Settings → Pages → Branch `main`, Ordner `/`**.
+3. App unter `https://<org>.github.io/MMCockpit/` erreichbar.
 
-Da die Daten im Browser gespeichert werden, sieht jede:r Benutzer:in nur die eigenen Buchungen. Für eine zentrale, geteilte Datenbasis ist später eine Backend-Anbindung auf dem Webspace geplant.
+Da Daten im Browser gespeichert werden, sieht jede:r Nutzer:in nur die eigenen Buchungen. Eine zentrale, geteilte Datenbasis folgt später über ein Backend.
 
 ## CSV-Format (Import aus Excel)
 
-In Excel als „CSV (semikolongetrennt)“ speichern. Kopfzeile:
+In Excel als „CSV (semikolongetrennt)" speichern. Kopfzeile:
 
 ```
 id;fahrzeug;von;bis;person;organisation;zweck;kontakt;status;notiz
 ```
 
 - `von` / `bis` als `YYYY-MM-DD HH:MM` (oder nur `YYYY-MM-DD`).
-- `status` mit einem der Werte `angefragt`, `bestaetigt`, `abgelehnt`, `abgeschlossen` („bestätigt“ wird ebenfalls erkannt).
-- `fahrzeug` muss namentlich passen; unbekannte Fahrzeuge werden beim Import automatisch angelegt.
+- `status`: `angefragt`, `bestaetigt`, `abgelehnt`, `abgeschlossen` („bestätigt" wird ebenfalls erkannt).
+- `fahrzeug` namentlich; unbekannte Fahrzeuge werden beim Import automatisch angelegt.
 
-## Lokal starten
+Die Datei `beispiel-buchungen.csv` kann direkt über den Tab *Import / Export* importiert werden, um die Datenstruktur zu testen.
 
-Einfach `index.html` im Browser öffnen – kein Build, keine Abhängigkeiten.
+## Anpassungen
 
-## Dateien
-
-- `index.html` – Struktur
-- `styles.css` – Layout
-- `app.js` – Logik & Persistenz
+- **Feedback-Empfänger:** in `js/feedback.js` die Konstante `FEEDBACK_TO` setzen.
+- **Fahrzeugfarben:** werden automatisch aus einer Palette vergeben (siehe `js/core.js`).
+- **PDF-Export** benötigt Internetverbindung (jsPDF wird vom CDN geladen).

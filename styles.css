@@ -23,11 +23,20 @@ body {
 }
 
 header {
-  padding: 18px 24px 8px;
+  padding: 18px 24px 12px;
   background: linear-gradient(135deg, #1e3a8a, #2563eb);
   color: #fff;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
 }
-header h1 { margin: 0; font-size: 1.5rem; }
+header > div:first-child, header > h1 { margin: 0; }
+header h1 { font-size: 1.5rem; }
+.maintenance-switch { display: flex; align-items: center; gap: 6px; font-size: .85rem; cursor: pointer; opacity: .95; }
+.maintenance-switch input { width: auto; }
+
+.maintenance-banner {
+  background: #fde68a; color: #92400e; text-align: center;
+  padding: 8px; font-weight: 600; font-size: .9rem;
+}
 .badge {
   font-size: .7rem; font-weight: 700; letter-spacing: .04em;
   background: #fde68a; color: #92400e; padding: 2px 8px; border-radius: 999px;
@@ -148,6 +157,43 @@ code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: .85
 .modal-actions { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
 .modal-actions .spacer { flex: 1; }
 .error { color: var(--bad); font-size: .88rem; margin: 8px 0; background: #fee2e2; padding: 8px 10px; border-radius: 8px; }
+
+/* Fahrzeug-Farbpunkt */
+.v-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+/* Liste */
+.inline-status { font-size: .8rem; padding: 4px 8px; }
+.note-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+.empty-row { text-align: center; color: var(--muted); padding: 20px; }
+.hint { color: var(--muted); font-size: .85rem; }
+
+/* Zeitstrahl */
+.timeline-wrap { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: auto; position: relative; }
+.tl-scroll { position: relative; min-width: max-content; }
+.tl-table { border-collapse: collapse; width: max-content; }
+.tl-table th, .tl-table td { border: 1px solid var(--line); padding: 0; }
+.tl-vehicle-col { position: sticky; left: 0; background: #eef2ff; font-weight: 600; padding: 6px 10px; text-align: left; min-width: 120px; z-index: 2; }
+.tl-table thead th { background: #f9fafb; color: var(--muted); font-size: .8rem; text-align: center; min-width: 44px; padding: 4px; position: sticky; top: 0; z-index: 1; }
+.tl-table thead .tl-vehicle-col { z-index: 3; }
+.tl-table th .tl-wd, .tl-table th .tl-day { display: block; }
+.tl-table th .tl-day { font-size: 1rem; color: var(--ink); }
+.tl-cell { height: 44px; background: #fff; }
+.tl-cell.we { background: #f9fafb; }
+.tl-table thead th.we { background: #f3f4f6; }
+.tl-bar {
+  position: absolute; border-radius: 6px; padding: 2px 8px; font-size: .74rem; color: #fff;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; cursor: pointer;
+  background: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.tl-bar.bestaetigt { background: var(--ok); }
+.tl-bar.angefragt { background: var(--warn); }
+.tl-bar.abgeschlossen { background: #6b7280; }
+.tl-bar span { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+
+/* Feedback */
+.feedback-form { max-width: 520px; display: flex; flex-direction: column; gap: 12px; }
+.feedback-form label { display: block; font-size: .85rem; color: var(--muted); }
+.feedback-form label input, .feedback-form label textarea { width: 100%; margin-top: 4px; }
 
 footer { text-align: center; color: var(--muted); font-size: .82rem; padding: 20px; }
 
