@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Makermobile Buchungstool – Beta</title>
+  <title>Makermobile Buchungstool</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="maintenance-banner" class="maintenance-banner" hidden>
+    ⚠️ Wartungsmodus aktiv – neue Buchungen sind gesperrt.
+  </div>
+
   <header>
-    <h1>🚐 Makermobile Buchungstool <span class="badge">Beta</span></h1>
-    <p class="subtitle">Vergabe der Makermobile – lokal in deinem Browser gespeichert.</p>
+    <h1>🚐 Makermobile Buchungstool</h1>
+    <p class="subtitle">Vergabe der Makermobile – Übersicht, Buchung und Export.</p>
+    <label class="maintenance-switch">
+      <input type="checkbox" id="maintenance-toggle" />
+      <span>Wartungsmodus</span>
+    </label>
   </header>
 
   <nav id="tabs">
     <button data-tab="calendar" class="active">Kalender</button>
+    <button data-tab="timeline">Zeitstrahl</button>
     <button data-tab="list">Liste</button>
     <button data-tab="vehicles">Fahrzeuge</button>
     <button data-tab="import">Import / Export</button>
+    <button data-tab="feedback">Feedback</button>
   </nav>
 
   <main>
@@ -26,9 +36,23 @@
         <button id="prev-week">‹</button>
         <span id="week-label" class="week-label"></span>
         <button id="next-week">›</button>
+        <button id="today-week">Heute</button>
         <button id="new-booking" class="primary">+ Neue Buchung</button>
       </div>
       <div id="calendar-grid"></div>
+    </section>
+
+    <!-- Zeitstrahl -->
+    <section id="tab-timeline" class="tab">
+      <div class="toolbar">
+        <button id="tl-prev">‹</button>
+        <span id="tl-label" class="week-label"></span>
+        <button id="tl-next">›</button>
+        <button id="tl-zoom-in">−</button>
+        <button id="tl-zoom-out">+</button>
+        <button id="new-booking-tl" class="primary">+ Neue Buchung</button>
+      </div>
+      <div id="timeline" class="timeline-wrap"></div>
     </section>
 
     <!-- Liste -->
@@ -49,16 +73,9 @@
         <table id="booking-table">
           <thead>
             <tr>
-              <th>Fahrzeug</th>
-              <th>Von</th>
-              <th>Bis</th>
-              <th>Person</th>
-              <th>Organisation</th>
-              <th>Zweck</th>
-              <th>Kontakt</th>
-              <th>Status</th>
-              <th>Notiz</th>
-              <th>Aktion</th>
+              <th>Fahrzeug</th><th>Von</th><th>Bis</th><th>Person</th>
+              <th>Organisation</th><th>Zweck</th><th>Kontakt</th>
+              <th>Status</th><th>Notiz</th><th>Aktion</th>
             </tr>
           </thead>
           <tbody id="booking-body"></tbody>
@@ -68,9 +85,7 @@
 
     <!-- Fahrzeuge -->
     <section id="tab-vehicles" class="tab">
-      <div class="toolbar">
-        <h2>Fahrzeuge</h2>
-      </div>
+      <div class="toolbar"><h2>Fahrzeuge</h2></div>
       <form id="vehicle-form" class="inline-form">
         <input type="text" id="vehicle-name" placeholder="Fahrzeugname (z.B. Makermobil 1)" required />
         <input type="text" id="vehicle-type" placeholder="Typ / Kennzeichen (optional)" />
@@ -83,11 +98,12 @@
     <section id="tab-import" class="tab">
       <h2>Import / Export</h2>
       <p>
-        Exportiere deine Buchungen als CSV (öffnet in Excel) oder importiere eine CSV,
+        Exportiere deine Buchungen als CSV (öffnet in Excel) oder PDF, oder importiere eine CSV,
         um deine bestehende Excel-Liste zu übernehmen. Beim Import werden doppelte IDs übersprungen.
       </p>
       <div class="actions">
         <button id="export-csv" class="primary">⬇ CSV exportieren</button>
+        <button id="export-pdf" class="primary">⬇ PDF exportieren</button>
         <label class="file-label">
           ⬆ CSV importieren
           <input type="file" id="import-csv" accept=".csv,text/csv" hidden />
@@ -98,11 +114,31 @@
           <input type="file" id="import-json" accept=".json,application/json" hidden />
         </label>
       </div>
+      <p class="hint">Beispiel-CSV zum Testen: <a href="beispiel-buchungen.csv" download>beispiel-buchungen.csv</a></p>
       <details>
         <summary>Erwartetes CSV-Format</summary>
-        <p>Spalten: <code>id,fahrzeug,von,bis,person,organisation,zweck,kontakt,status,notiz</code><br />
+        <p>Spalten: <code>id;fahrzeug;von;bis;person;organisation;zweck;kontakt;status;notiz</code><br />
         Datum/Zeit als <code>YYYY-MM-DD HH:MM</code> oder <code>YYYY-MM-DD</code>. Status: angefragt, bestaetigt, abgelehnt, abgeschlossen.</p>
       </details>
+    </section>
+
+    <!-- Feedback -->
+    <section id="tab-feedback" class="tab">
+      <h2>Feedback / Support-Anfrage</h2>
+      <p>Diese Nachricht öffnet dein E-Mail-Programm mit einer vorausgefüllten Mail an die Makermobile-Verwaltung.</p>
+      <form id="feedback-form" class="feedback-form">
+        <label>Name (optional)
+          <input type="text" id="fb-name" placeholder="Dein Name" />
+        </label>
+        <label>Betreff
+          <input type="text" id="fb-subject" placeholder="z.B. Fehler gefunden, Verbesserungsvorschlag" />
+        </label>
+        <label>Nachricht
+          <textarea id="fb-message" rows="5" required placeholder="Beschreibe dein Anliegen…"></textarea>
+        </label>
+        <button type="submit" class="primary">Per E-Mail senden</button>
+        <p id="fb-sent" class="hint" hidden>✓ E-Mail-Programm wurde geöffnet.</p>
+      </form>
     </section>
   </main>
 
@@ -159,9 +195,9 @@
   </div>
 
   <footer>
-    <p>Makermobile Buchungstool – Beta. Daten werden nur lokal in deinem Browser gespeichert (localStorage).</p>
+    <p>Makermobile Buchungstool – Daten werden lokal in deinem Browser gespeichert (localStorage).</p>
   </footer>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

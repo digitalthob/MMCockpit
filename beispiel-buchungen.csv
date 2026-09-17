@@ -1,0 +1,6 @@
+﻿id;fahrzeug;von;bis;person;organisation;zweck;kontakt;status;notiz
+b1;Makermobil 1;2026-09-19 09:00;2026-09-19 16:00;Anna Beispiel;Grundschule Sonnenschein;Projekttag Papierflugzeuge;anna@beispiel.de;bestaetigt;Schlüsselübergabe 8:45
+b2;Makermobil 2;2026-09-20 10:00;2026-09-22 17:00;Max Mustermann;Volkshochschule;Robotik-Workshop;max@mustermann.de;angefragt;3 Tage
+b3;Makermobil 1;2026-09-24 08:00;2026-09-26 18:00;Julia Kunz;Stadtjugendpflege;Sommerferien-Programm;j.kunz@stadt.de;angefragt;
+b4;Makermobil 2;2026-09-14 09:00;2026-09-14 15:00;Tom Adler;Realschule Nord;MINT-Projekt;tom.adler@beispiel.de;abgeschlossen;Erfolgreich
+b5;Makermobil 1;2026-09-16 09:00;2026-09-16 13:00;Sara Wolf;Kita Bunt;Bastelaktion;sara.wolf@beispiel.de;abgelehnt;Terminkollision
