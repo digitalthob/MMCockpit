@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Makermobile Buchungstool – Beta</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🚐 Makermobile Buchungstool <span class="badge">Beta</span></h1>
+    <p class="subtitle">Vergabe der Makermobile – lokal in deinem Browser gespeichert.</p>
+  </header>
+
+  <nav id="tabs">
+    <button data-tab="calendar" class="active">Kalender</button>
+    <button data-tab="list">Liste</button>
+    <button data-tab="vehicles">Fahrzeuge</button>
+    <button data-tab="import">Import / Export</button>
+  </nav>
+
+  <main>
+    <!-- Kalender -->
+    <section id="tab-calendar" class="tab active">
+      <div class="toolbar">
+        <button id="prev-week">‹</button>
+        <span id="week-label" class="week-label"></span>
+        <button id="next-week">›</button>
+        <button id="new-booking" class="primary">+ Neue Buchung</button>
+      </div>
+      <div id="calendar-grid"></div>
+    </section>
+
+    <!-- Liste -->
+    <section id="tab-list" class="tab">
+      <div class="toolbar">
+        <input type="search" id="search" placeholder="Suchen…" />
+        <select id="filter-vehicle"></select>
+        <select id="filter-status">
+          <option value="">Alle Status</option>
+          <option value="angefragt">angefragt</option>
+          <option value="bestaetigt">bestätigt</option>
+          <option value="abgelehnt">abgelehnt</option>
+          <option value="abgeschlossen">abgeschlossen</option>
+        </select>
+        <button id="new-booking-2" class="primary">+ Neue Buchung</button>
+      </div>
+      <div class="table-wrap">
+        <table id="booking-table">
+          <thead>
+            <tr>
+              <th>Fahrzeug</th>
+              <th>Von</th>
+              <th>Bis</th>
+              <th>Person</th>
+              <th>Organisation</th>
+              <th>Zweck</th>
+              <th>Kontakt</th>
+              <th>Status</th>
+              <th>Notiz</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody id="booking-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Fahrzeuge -->
+    <section id="tab-vehicles" class="tab">
+      <div class="toolbar">
+        <h2>Fahrzeuge</h2>
+      </div>
+      <form id="vehicle-form" class="inline-form">
+        <input type="text" id="vehicle-name" placeholder="Fahrzeugname (z.B. Makermobil 1)" required />
+        <input type="text" id="vehicle-type" placeholder="Typ / Kennzeichen (optional)" />
+        <button type="submit" class="primary">Fahrzeug hinzufügen</button>
+      </form>
+      <ul id="vehicle-list" class="card-list"></ul>
+    </section>
+
+    <!-- Import / Export -->
+    <section id="tab-import" class="tab">
+      <h2>Import / Export</h2>
+      <p>
+        Exportiere deine Buchungen als CSV (öffnet in Excel) oder importiere eine CSV,
+        um deine bestehende Excel-Liste zu übernehmen. Beim Import werden doppelte IDs übersprungen.
+      </p>
+      <div class="actions">
+        <button id="export-csv" class="primary">⬇ CSV exportieren</button>
+        <label class="file-label">
+          ⬆ CSV importieren
+          <input type="file" id="import-csv" accept=".csv,text/csv" hidden />
+        </label>
+        <button id="export-json">JSON Backup</button>
+        <label class="file-label">
+          JSON wiederherstellen
+          <input type="file" id="import-json" accept=".json,application/json" hidden />
+        </label>
+      </div>
+      <details>
+        <summary>Erwartetes CSV-Format</summary>
+        <p>Spalten: <code>id,fahrzeug,von,bis,person,organisation,zweck,kontakt,status,notiz</code><br />
+        Datum/Zeit als <code>YYYY-MM-DD HH:MM</code> oder <code>YYYY-MM-DD</code>. Status: angefragt, bestaetigt, abgelehnt, abgeschlossen.</p>
+      </details>
+    </section>
+  </main>
+
+  <!-- Buchungs-Dialog -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <button class="close" id="modal-close" aria-label="Schließen">✕</button>
+      <h2 id="modal-title">Neue Buchung</h2>
+      <form id="booking-form">
+        <input type="hidden" id="booking-id" />
+        <div class="grid">
+          <label>Fahrzeug
+            <select id="b-vehicle" required></select>
+          </label>
+          <label>Status
+            <select id="b-status">
+              <option value="angefragt">angefragt</option>
+              <option value="bestaetigt">bestätigt</option>
+              <option value="abgelehnt">abgelehnt</option>
+              <option value="abgeschlossen">abgeschlossen</option>
+            </select>
+          </label>
+          <label>Von (Datum & Uhrzeit)
+            <input type="datetime-local" id="b-from" required />
+          </label>
+          <label>Bis (Datum & Uhrzeit)
+            <input type="datetime-local" id="b-to" required />
+          </label>
+          <label>Person
+            <input type="text" id="b-person" required placeholder="Name der verantwortlichen Person" />
+          </label>
+          <label>Organisation / Schule
+            <input type="text" id="b-org" placeholder="z.B. Schule XYZ, Verein" />
+          </label>
+          <label>Kontakt (E-Mail / Telefon)
+            <input type="text" id="b-contact" placeholder="E-Mail oder Telefon" />
+          </label>
+          <label>Zweck
+            <input type="text" id="b-purpose" placeholder="Verwendungszweck" />
+          </label>
+        </div>
+        <label>Notiz
+          <textarea id="b-note" rows="2" placeholder="optional"></textarea>
+        </label>
+        <p id="form-error" class="error" hidden></p>
+        <div class="modal-actions">
+          <button type="button" id="delete-booking" class="danger" hidden>Buchung löschen</button>
+          <span class="spacer"></span>
+          <button type="button" id="cancel-booking">Abbrechen</button>
+          <button type="submit" class="primary">Speichern</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>Makermobile Buchungstool – Beta. Daten werden nur lokal in deinem Browser gespeichert (localStorage).</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
