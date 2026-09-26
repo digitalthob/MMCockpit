@@ -20,7 +20,8 @@ export function initBookingDialog() {
 }
 
 // Öffnet den Dialog. Ohne Argument = neue Buchung, sonst Bearbeiten.
-export function openModal(booking) {
+// Zusätzlich: startDatum (Date) für neue Buchung an bestimmtem Tag.
+export function openModal(booking, startDatum) {
   $("#booking-id").value = booking ? booking.id : "";
   $("#b-vehicle").value = booking ? booking.vehicleId : (state.vehicles[0] && state.vehicles[0].id) || "";
   $("#b-status").value = booking ? booking.status : "angefragt";
@@ -37,9 +38,9 @@ export function openModal(booking) {
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden", "false");
   if (!booking) {
-    // Vorschlag: morgen 09:00–13:00 Uhr.
-    const now = new Date();
-    const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0);
+    // Vorschlag: morgen 09:00–13:00 Uhr, oder gewählter Tag 09:00–13:00 Uhr.
+    const base = startDatum || new Date();
+    const next = new Date(base.getFullYear(), base.getMonth(), base.getDate() + (startDatum ? 0 : 1), 9, 0);
     $("#b-from").value = toLocalInput(next);
     $("#b-to").value = toLocalInput(new Date(next.getTime() + 4 * 3600 * 1000));
   }

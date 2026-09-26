@@ -7,12 +7,13 @@ Das **Makermobile Buchungstool** macht die Vergabe der Makermobile sichtbar und 
 ## Funktionen
 
 - **Kalenderansicht**: Wochenraster pro Makermobil, Buchungen farbig nach Status.
+- **Monatsansicht**: klassische Monatsübersicht aller Fahrzeuge, Klick auf einen Tag legt eine neue Buchung an.
 - **Zeitstrahl-Ansicht**: Gantt-ähnliche Übersicht über mehrere Wochen, zoombar, selbstgebaut (keine externe Lib).
 - **Listenansicht**: alle Buchungen mit Suche, Filter (Fahrzeug/Status) und Schnell-Statuswechsel.
 - **Fahrzeugverwaltung**: Makermobile anlegen, umbenennen, löschen – jedes mit eigener Farbe.
 - **Buchungsformular**: Von/Bis, Person, Organisation/Schule, Kontakt, Zweck, Notiz, Status (`angefragt`, `bestätigt`, `abgelehnt`, `abgeschlossen`) inkl. **Kollisionsprüfung** bei Überschneidungen.
 - **Wartungsmodus**: Sperrt neue Buchungen und zeigt ein Banner (Schalter oben rechts).
-- **Import / Export**: CSV (semikolongetrennt, Excel-kompatibel), **PDF-Export** (jsPDF, lazily via CDN), JSON-Backup/Restore.
+- **Import / Export**: CSV (semikolongetrennt, Excel-kompatibel), **PDF-Export** (jsPDF, lazily via CDN), **ICS-Kalender-Export** (importierbar in Google/Outlook/Apple Kalender), JSON-Backup/Restore.
 - **Feedback-Formular**: Versand über `mailto:` an die Verwaltung.
 - **Lokale Speicherung**: alle Daten im `localStorage` – kein Server, kein Login.
 
@@ -31,6 +32,7 @@ js/timeline.js      Zeitstrahl-Ansicht (selbstgebaut)
 js/list.js          Listenansicht
 js/importexport.js  CSV/JSON Import & Export
 js/pdf.js           PDF-Export (jsPDF via CDN)
+js/ics.js           ICS-Kalender-Export (RFC 5545, ohne externe Lib)
 js/feedback.js      Feedback per mailto:
 beispiel-buchungen.csv  Beispiel-CSV zum Testen des Imports
 ```

@@ -3,6 +3,7 @@
 // id,fahrzeug,von,bis,person,organisation,zweck,kontakt,status,notiz
 import { state, saveState, vId, bId, vehicleName, normStatus, $ } from "./core.js";
 import { populateVehicleSelects } from "./ui.js";
+import { initICS } from "./ics.js";
 
 const CSV_COLS = ["id", "fahrzeug", "von", "bis", "person", "organisation", "zweck", "kontakt", "status", "notiz"];
 
@@ -14,6 +15,7 @@ export function initImportExport() {
   $("#export-pdf").addEventListener("click", () => {
     import("./pdf.js").then((m) => m.exportPDF());
   });
+  initICS();
 }
 
 // ---------- CSV Export ----------

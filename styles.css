@@ -101,6 +101,28 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent-dim)
 .event.abgelehnt { background: #fee2e2; color: #991b1b; border-left-color: var(--bad); }
 .event.abgeschlossen { background: #e5e7eb; color: #374151; border-left-color: #6b7280; }
 
+/* Monatsansicht */
+.view-switch { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.view-switch button { border: none; border-radius: 0; background: #fff; color: var(--muted); }
+.view-switch button.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
+#month-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 0;
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff;
+}
+.month-cell {
+  border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  min-height: 92px; padding: 6px; background: #fff; position: relative;
+  display: flex; flex-direction: column; gap: 3px; cursor: pointer;
+}
+.month-cell:nth-child(7n) { border-right: none; }
+.month-cell.head { background: #f9fafb; font-weight: 600; text-align: center; color: var(--muted); font-size: .85rem; min-height: auto; cursor: default; }
+.month-cell.off { background: #f9fafb; color: var(--muted); cursor: default; }
+.month-cell.we { background: #fcfcfd; }
+.month-day-num { font-weight: 700; font-size: .8rem; color: var(--ink); align-self: flex-start; }
+.month-day-num.today { color: #fff; background: var(--accent); border-radius: 999px; padding: 1px 7px; }
+.month-cell .event { display: flex; align-items: center; }
+.month-cell .event.more { justify-content: center; color: var(--muted); }
+
 /* Tabelle */
 .table-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
 table { width: 100%; border-collapse: collapse; font-size: .88rem; }
