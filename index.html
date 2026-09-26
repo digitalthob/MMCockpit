@@ -37,9 +37,19 @@
         <span id="week-label" class="week-label"></span>
         <button id="next-week">›</button>
         <button id="today-week">Heute</button>
+        <span class="view-switch">
+          <button id="view-week" class="active">Woche</button>
+          <button id="view-month">Monat</button>
+        </span>
         <button id="new-booking" class="primary">+ Neue Buchung</button>
       </div>
-      <div id="calendar-grid"></div>
+      <div id="week-wrap">
+        <div id="calendar-grid"></div>
+      </div>
+      <div id="month-wrap" hidden>
+        <p class="hint">Klick auf einen Tag = neue Buchung anlegen. Klick auf eine Buchung = bearbeiten.</p>
+        <div id="month-grid"></div>
+      </div>
     </section>
 
     <!-- Zeitstrahl -->
@@ -104,6 +114,7 @@
       <div class="actions">
         <button id="export-csv" class="primary">⬇ CSV exportieren</button>
         <button id="export-pdf" class="primary">⬇ PDF exportieren</button>
+        <button id="export-ics" class="primary">⬇ Kalender (.ics) exportieren</button>
         <label class="file-label">
           ⬆ CSV importieren
           <input type="file" id="import-csv" accept=".csv,text/csv" hidden />

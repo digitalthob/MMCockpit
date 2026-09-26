@@ -1,15 +1,15 @@
 // app.js — Einstiegspunkt. Initialisiert alle Module und verbindet sie.
 // Modularer Aufbau, damit das Tool später als WordPress-Plugin oder mit
 // Backend (MySQL) erweitert werden kann. Jede Funktionalität liegt in js/*.js.
-import { state, $ } from "./core.js";
-import { initTabs, populateVehicleSelects, initMaintenance } from "./ui.js";
-import { initVehicles, renderVehicles } from "./vehicles.js";
-import { initBookingDialog } from "./booking.js";
-import { initCalendar, renderCalendar } from "./calendar.js";
-import { initList, renderList } from "./list.js";
-import { initTimeline, renderTimeline } from "./timeline.js";
-import { initImportExport } from "./importexport.js";
-import { initFeedback } from "./feedback.js";
+import { state, $ } from "./js/core.js";
+import { initTabs, populateVehicleSelects, initMaintenance } from "./js/ui.js";
+import { initVehicles, renderVehicles } from "./js/vehicles.js";
+import { initBookingDialog } from "./js/booking.js";
+import { initCalendar, renderCalendar } from "./js/calendar.js";
+import { initList, renderList } from "./js/list.js";
+import { initTimeline, renderTimeline } from "./js/timeline.js";
+import { initImportExport } from "./js/importexport.js";
+import { initFeedback } from "./js/feedback.js";
 
 // ---------- Init ----------
 populateVehicleSelects();
