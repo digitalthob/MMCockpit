@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Makermobil Cockpit – Pilotjahr 2026</title>
+<title>Makermobil Cockpit – Dashboard</title>
 <!-- Inter Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -314,6 +314,40 @@ header {
   header { padding: 14px 20px; }
   .container { padding: 20px 16px; }
 }
+
+/* ── TAB NAVIGATION ── */
+.tab-nav {
+  display:flex; justify-content:center; gap:6px;
+  padding:14px 20px 0;
+  background:linear-gradient(180deg, rgba(26,26,46,0.06) 0%, transparent 100%);
+  position:sticky; top:0; z-index:1000;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.tab-btn {
+  font-family:'Inter',sans-serif; font-size:0.85rem; font-weight:600;
+  padding:10px 22px; border:none; border-radius:12px 12px 0 0;
+  cursor:pointer; transition:var(--transition);
+  background:rgba(255,255,255,0.5); color:var(--c-muted);
+  border-bottom:3px solid transparent;
+  position:relative;
+}
+.tab-btn:hover { background:rgba(255,255,255,0.8); color:var(--c-text); }
+.tab-btn.active {
+  background:var(--c-card); color:var(--c-text);
+  border-bottom:3px solid #80a22b;
+  box-shadow:0 -2px 12px rgba(0,0,0,0.06);
+}
+.tab-btn .tab-dot {
+  display:inline-block; width:8px; height:8px; border-radius:50%;
+  margin-right:6px; vertical-align:middle;
+}
+.year-label {
+  display:block; font-size:0.65rem; font-weight:400; color:var(--c-muted);
+  margin-top:2px; letter-spacing:0.5px; text-transform:uppercase;
+}
+.tab-btn.active .year-label { color:#80a22b; }
+
 </style>
 </head>
 <body>
@@ -332,6 +366,22 @@ header {
     <div class="clock-time" id="clockTime">--:--:--</div>
   </div>
 </header>
+
+<nav class="tab-nav">
+  <button class="tab-btn" data-year="2025" onclick="switchYear('2025')">
+    <span class="tab-dot" style="background:#9ca3af"></span>2025
+    <span class="year-label">Rückblick</span>
+  </button>
+  <button class="tab-btn" data-year="2026" onclick="switchYear('2026')">
+    <span class="tab-dot" style="background:#edab35"></span>2026
+    <span class="year-label">Pilotjahr</span>
+  </button>
+  <button class="tab-btn active" data-year="2026/2027" onclick="switchYear('2026/2027')">
+    <span class="tab-dot" style="background:#80a22b"></span>2026/2027
+    <span class="year-label">Projektjahr</span>
+  </button>
+</nav>
+
 
 <div class="container">
 
@@ -372,19 +422,19 @@ header {
 
   <div class="ws-compare">
     <div class="ws-box">
-      <div class="ws-box-year">&#9664; R&uuml;ckblick 2025</div>
-      <div class="ws-box-num" style="color:#555">34</div>
-      <div class="ws-box-sub">Workshops durchgef&uuml;hrt</div>
-      <div class="ws-box-detail">
+      <div class="ws-box-year" id="compareLeftTitle">&#9664; R&uuml;ckblick 2025</div>
+      <div class="ws-box-num" style="color:#555" id="compareLeftNum">34</div>
+      <div class="ws-box-sub" id="compareLeftSub">Workshops durchgef&uuml;hrt</div>
+      <div class="ws-box-detail" id="compareLeftDetail">
         <strong>3.010</strong> direkt erreichte Personen<br>
         Qualifizierung: 9 &middot; MtS: 4 &middot; WarmUp: 4 &middot; &Ouml;ffentlich: 17
       </div>
     </div>
     <div class="ws-box live">
-      <div class="ws-box-year">&#9654; Pilotjahr 2026 (geplant)</div>
-      <div class="ws-box-num" style="color:#edab35">628</div>
-      <div class="ws-box-sub">Workshops geplant (Team + MZV)</div>
-      <div class="ws-box-detail">
+      <div class="ws-box-year" id="compareRightTitle">&#9654; Pilotjahr 2026 (geplant)</div>
+      <div class="ws-box-num" style="color:#edab35" id="compareRightNum">628</div>
+      <div class="ws-box-sub" id="compareRightSub">Workshops geplant (Team + MZV)</div>
+      <div class="ws-box-detail" id="compareRightDetail">
         <strong>17.363</strong> direkt erreichte Personen (Plan)<br>
         Team: 37 &middot; MZV: 591
       </div>
@@ -392,15 +442,15 @@ header {
   </div>
 
   <div class="progress-section">
-    <h4>&#x26A1; Live-Fortschritt 2026 <span style="font-weight:400;color:#9ca3af">(aus Veranstaltungsmeldungen)</span></h4>
+    <h4 id="progressTitle">&#x26A1; Live-Fortschritt <span style="font-weight:400;color:#9ca3af">(aus Veranstaltungsmeldungen)</span></h4>
     <div class="progress-wrap">
       <div class="progress-label-row">
         <span>Veranstaltungen durchgef&uuml;hrt</span>
-        <span><strong style="color:#80a22b">94</strong> <span style="color:#b0b8c8">/ 628 geplant (15,0&nbsp;%)</span></span>
+        <span><strong style="color:#80a22b">299</strong> <span style="color:#b0b8c8">/ 628 geplant (47,6&nbsp;%)</span></span>
       </div>
       <div class="compare-bar-wrap">
         <div class="compare-bar">
-          <div class="compare-achieved" style="width:0%" data-target="15.0%"></div>
+          <div class="compare-achieved" style="width:0%" data-target="47.6%"></div>
           <div class="compare-remaining"></div>
         </div>
       </div>
@@ -408,11 +458,11 @@ header {
     <div class="progress-wrap">
       <div class="progress-label-row">
         <span>Personen erreicht</span>
-        <span><strong style="color:#80a22b">5.063</strong> <span style="color:#b0b8c8">/ 17.363 geplant (29,2&nbsp;%)</span></span>
+        <span><strong style="color:#80a22b">12.022</strong> <span style="color:#b0b8c8">/ 17.363 geplant (69,2&nbsp;%)</span></span>
       </div>
       <div class="compare-bar-wrap">
         <div class="compare-bar">
-          <div class="compare-achieved" style="width:0%" data-target="29.2%"></div>
+          <div class="compare-achieved" style="width:0%" data-target="69.2%"></div>
           <div class="compare-remaining"></div>
         </div>
       </div>
@@ -428,7 +478,7 @@ header {
 <div class="card fade-up" style="animation-delay:.35s">
   <div class="card-header">
     <div class="card-icon" style="background:linear-gradient(135deg,#44a1d7,#2e7db5)">&#x1F5FA;&#xFE0F;</div>
-    <h3>Stationierung der Makermobile 2026</h3>
+    <h3 id="stationTitle">Stationierung der Makermobile</h3>
   </div>
 
   <div class="filter-bar">
@@ -437,10 +487,10 @@ header {
       <select id="filterMonth">
         <option value="all">Alle Monate</option>
         <option value="1">Januar</option><option value="2">Februar</option>
-        <option value="3" selected>M&auml;rz</option><option value="4">April</option>
+        <option value="3">M&auml;rz</option><option value="4">April</option>
         <option value="5">Mai</option><option value="6">Juni</option>
         <option value="7">Juli</option><option value="8">August (Inspektion)</option>
-        <option value="9">September</option><option value="10">Oktober</option>
+        <option value="9">September</option><option value="10" selected>Oktober</option>
         <option value="11">November</option><option value="12">Dezember</option>
       </select>
     </div>
@@ -471,8 +521,8 @@ header {
   <div class="card fade-up" style="animation-delay:.4s">
     <div class="card-header">
       <div class="card-icon" style="background:linear-gradient(135deg,#edab35,#d4941a)">&#x1F4C5;</div>
-      <h3>Anfragen nach Startmonat</h3>
-      <span class="card-badge">44 gesamt</span>
+      <h3 id="anfragenTitle">Anfragen nach Startmonat</h3>
+      <span class="card-badge" id="anfragenBadge">44 gesamt</span>
     </div>
     <div class="chart-box"><canvas id="monatChart"></canvas></div>
     <div class="info-box">
@@ -537,8 +587,8 @@ header {
 <div class="card fade-up" style="animation-delay:.6s">
   <div class="card-header">
     <div class="card-icon" style="background:linear-gradient(135deg,#a92626,#d44)">&#x1F4DD;</div>
-    <h3>Veranstaltungen nach Makermobil &mdash; Live 2026</h3>
-    <span class="card-badge">94 Veranstaltungen total</span>
+    <h3 id="mmEventsTitle">Veranstaltungen nach Makermobil &mdash; Projektjahr 2026/2027</h3>
+    <span class="card-badge" id="mmEventsBadge">299 Veranstaltungen total</span>
   </div>
   <div class="chart-box"><canvas id="mmEventsChart"></canvas></div>
 </div>
@@ -546,7 +596,7 @@ header {
 </div><!-- /container -->
 
 <footer style="text-align:center;font-size:0.72rem;color:#b0b8c8;padding:28px;font-family:Inter,sans-serif">
-  Makermobil Cockpit &ndash; Pilotjahr 2026 &middot; LMZ Baden-W&uuml;rttemberg
+  Makermobil Cockpit &middot; LMZ Baden-W&uuml;rttemberg
 </footer>
 
 <script>
@@ -628,28 +678,28 @@ if (wsTypCard) {
 // ═══════════════════════════════════════
 const MM = [
   { id:1, name:'MM 1 (Wei\u00df)',   color:'#555555', emoji:'\u26aa',
-    months:['Team MM','Team MM','Team MM','Team MM','Team MM','Team MM / Reutlingen','Team MM','Inspektion','Team MM','Team MM','Team MM','Team MM'],
+    months:['\u2014','Team MM','Team MM','Team MM','Team MM','Calw','Calw','Inspektion','Team MM','Team MM','Team MM','Team MM'],
     lat:49.005, lng:8.404 },
   { id:2, name:'MM 2 (Blau)',         color:'#44a1d7', emoji:'\ud83d\udfe6',
-    months:['\u2014','\u2014','Emmendingen','Emmendingen','Emmendingen','Emmendingen','Emmendingen','Inspektion','Heidenheim','Heidenheim','Heidenheim','Heidenheim'],
+    months:['\u2014','\u2014','Emmendingen','Emmendingen','Emmendingen','Emmendingen','Emmendingen','Emmendingen + Ferienprogramm','Rems-Murr-Kreis','Rems-Murr-Kreis','Rems-Murr-Kreis','Rems-Murr-Kreis'],
     lat:48.125, lng:7.852 },
   { id:3, name:'MM 3 (Gr\u00fcn)',   color:'#80a22b', emoji:'\ud83d\udfe2',
-    months:['\u2014','Tuttlingen','Konstanz','Konstanz','Konstanz','Tuttlingen','Tuttlingen','Inspektion','Stuttgart','Stuttgart','Stuttgart','Stuttgart'],
+    months:['\u2014','Tuttlingen','Konstanz','Konstanz','Konstanz','Tuttlingen','Tuttlingen','Inspektion','Tuttlingen','Tuttlingen','Tuttlingen','Tuttlingen'],
     lat:47.665, lng:9.175 },
   { id:4, name:'MM 4 (Gelb)',         color:'#edab35', emoji:'\ud83d\udfe1',
-    months:['\u2014','\u2014','SMZ Karlsruhe','SMZ Karlsruhe','SMZ Karlsruhe','Calw / Mittelbaden','Calw / Mittelbaden','Inspektion','Karlsruhe-Land','Karlsruhe-Land','Karlsruhe-Land','Karlsruhe-Land'],
+    months:['\u2014','\u2014','SMZ Karlsruhe','SMZ Karlsruhe','SMZ Karlsruhe','Team MM','Team MM','Inspektion','SMZ Karlsruhe','SMZ Karlsruhe','SMZ Karlsruhe','SMZ Karlsruhe'],
     lat:49.009, lng:8.389 },
   { id:5, name:'MM 5 (Orange)',       color:'#fd7e14', emoji:'\ud83d\udfe0',
-    months:['\u2014','Heidelberg','Heidelberg','Heidelberg','Zollernalb','Zollernalb','Zollernalb','Inspektion','Crailsheim','Crailsheim','Crailsheim','Crailsheim'],
+    months:['\u2014','Rhein-Neckar','Rhein-Neckar','Rhein-Neckar','Rhein-Neckar','Zollernalb','Rhein-Neckar','Inspektion','\u2014','\u2014','\u2014','\u2014'],
     lat:49.398, lng:8.672 },
   { id:6, name:'MM 6 (Rot)',          color:'#a92626', emoji:'\ud83d\udd34',
-    months:['\u2014','\u2014','L\u00f6rrach','L\u00f6rrach','Ulm','Ulm','Ulm','Inspektion','Rems-Murr-Kreis','Rems-Murr-Kreis','Rems-Murr-Kreis','Rems-Murr-Kreis'],
+    months:['\u2014','L\u00f6rrach','L\u00f6rrach','L\u00f6rrach','Ulm','Ulm','Ulm','Inspektion','Ravensburg','Ravensburg','Ravensburg','Ravensburg'],
     lat:47.615, lng:7.661 },
   { id:7, name:'MM 7 (Violett)',      color:'#a82a78', emoji:'\ud83d\udfe3',
-    months:['\u2014','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Inspektion','Ravensburg','Ravensburg','Ravensburg','Ravensburg'],
+    months:['\u2014','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Inspektion','Heidenheim','Heidenheim','Heidenheim','Heidenheim'],
     lat:47.654, lng:9.479 },
   { id:8, name:'MM 8 (Schwarz)',      color:'#333333', emoji:'\u26ab',
-    months:['\u2014','\u2014','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Emmendingen + Sommerakademie','Freudenstadt','Freudenstadt','Freudenstadt','Freudenstadt'],
+    months:['\u2014','\u2014','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Inspektion','Freudenstadt','Freudenstadt','Freudenstadt','Freudenstadt'],
     lat:49.35, lng:9.15 },
 ];
 
@@ -676,6 +726,9 @@ const LOCS = {
   'Neckar-Odenwald':          [49.35,  9.15 ],
   'Team MM / Reutlingen':     [48.492, 9.215],
   'Emmendingen + Sommerakademie': [48.125, 7.852],
+  'Emmendingen + Ferienprogramm': [48.125, 7.852],
+  'Rhein-Neckar':               [49.485, 8.468],
+  'Calw':                       [48.714, 8.735],
 };
 
 const MONTHS = ['Januar','Februar','M\u00e4rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
@@ -852,17 +905,134 @@ const C = {
   druck:'#44a1d7', grafik:'#a82a78', laser:'#edab35',
   mechatronik:'#a92626', studio:'#ffe566', textil:'#80a22b'
 };
+
+// ═══════════════════════════════════════
+//  YEAR DATA SETS
+// ═══════════════════════════════════════
+const YEARS = {
+  '2025': {
+    title: 'R\u00fcckblick 2025', subtitle: 'Testphase & erste Workshops',
+    kpi: { makermobile:3, mz:2, workshops:53, personen:3387 },
+    kpiFrom: { makermobile:0, mz:0, workshops:0, personen:3000 },
+    achieved: { workshops:53, personen:3387 },
+    planned: { workshops:53, personen:3387 },
+    achievedPct: { workshops:'100%', personen:'100%' },
+    achievedLabel: { workshops:'53', personen:'3.387' },
+    plannedLabel: { workshops:'53', personen:'3.387' },
+    compareLeft: { title:'\u25c4 Vorbereitung 2024', num:'2', sub:'Erste Tests', detail:'<strong>Teamaufbau</strong> und Konzeptentwicklung' },
+    compareRight: { title:'\u25ba Ergebnis 2025', num:'53', sub:'Workshops durchgef\u00fchrt', detail:'<strong>3.387</strong> Personen erreicht<br>3 Makermobile aktiv' },
+    mmEvents: [46,1,0,6,0,0,0,0],
+    mmEventsTotal: 53,
+    mmEventsTitle: 'Veranstaltungen nach Makermobil \u2014 2025',
+    anfragen: [0,0,0,0,0,0,0,0,0,0,0,0],
+    anfragenTotal: 0, anfragenMax: 5, anfragenStep: 1,
+    formatData: [0,0,0,0],
+    qualiData: [0,0,0,0,0],
+    progressTitle: '\u26a1 Ergebnis 2025',
+    stationTitle: 'Stationierung 2025',
+    anfragenTitle: 'Anfragen 2025',
+    showAnfragen: false,
+    mmEventsYMax: 50, mmEventsStep: 10,
+    stationData: [
+      { id:1, name:'MM 1 (Wei\u00df)', color:'#555555', emoji:'\u26aa',
+        months:['Team MM','Team MM','Team MM','Team MM','Team MM','Team MM','Team MM','\u2014','Team MM','Team MM','Team MM','Team MM'] },
+      { id:2, name:'MM 2 (Blau)', color:'#44a1d7', emoji:'\ud83d\udfe6',
+        months:['\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014'] },
+      { id:3, name:'MM 3 (Gr\u00fcn)', color:'#80a22b', emoji:'\ud83d\udfe2',
+        months:['\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','\u2014'] },
+      { id:4, name:'MM 4 (Gelb)', color:'#edab35', emoji:'\ud83d\udfe1',
+        months:['\u2014','\u2014','\u2014','\u2014','\u2014','\u2014','Team MM','\u2014','\u2014','Team MM','Team MM','Team MM'] },
+      { id:5, name:'MM 5 (Orange)', color:'#fd7e14', emoji:'\ud83d\udfe0', months:Array(12).fill('\u2014') },
+      { id:6, name:'MM 6 (Rot)', color:'#a92626', emoji:'\ud83d\udd34', months:Array(12).fill('\u2014') },
+      { id:7, name:'MM 7 (Violett)', color:'#a82a78', emoji:'\ud83d\udfe3', months:Array(12).fill('\u2014') },
+      { id:8, name:'MM 8 (Schwarz)', color:'#333333', emoji:'\u26ab', months:Array(12).fill('\u2014') },
+    ],
+  },
+  '2026': {
+    title: 'Pilotjahr 2026', subtitle: '8 Makermobile \u2013 24 Medienzentren',
+    kpi: { makermobile:8, mz:24, workshops:628, personen:17363 },
+    kpiFrom: { makermobile:0, mz:0, workshops:0, personen:17000 },
+    achieved: { workshops:94, personen:5063 },
+    planned: { workshops:628, personen:17363 },
+    achievedPct: { workshops:'15.0%', personen:'29.2%' },
+    achievedLabel: { workshops:'94', personen:'5.063' },
+    plannedLabel: { workshops:'628', personen:'17.363' },
+    compareLeft: { title:'\u25c4 R\u00fcckblick 2025', num:'34', sub:'Workshops durchgef\u00fchrt', detail:'<strong>3.010</strong> direkt erreichte Personen<br>Qualifizierung: 9 \u00b7 MtS: 4 \u00b7 WarmUp: 4 \u00b7 \u00d6ffentlich: 17' },
+    compareRight: { title:'\u25ba Pilotjahr 2026 (geplant)', num:'628', sub:'Workshops geplant (Team + MZV)', detail:'<strong>17.363</strong> direkt erreichte Personen (Plan)<br>Team: 37 \u00b7 MZV: 591' },
+    mmEvents: [53,3,8,10,1,9,9,0],
+    mmEventsTotal: 94,
+    mmEventsTitle: 'Veranstaltungen nach Makermobil \u2014 Pilotjahr 2026',
+    anfragen: [3,3,7,6,3,4,16,0,0,1,0,1],
+    anfragenTotal: 44, anfragenMax: 20, anfragenStep: 4,
+    formatData: [18,17,7,2],
+    qualiData: [7,10,5,12,8],
+    progressTitle: '\u26a1 Live-Fortschritt Pilotjahr 2026',
+    stationTitle: 'Stationierung Pilotjahr 2026',
+    anfragenTitle: 'Anfragen nach Startmonat',
+    showAnfragen: true,
+    mmEventsYMax: 60, mmEventsStep: 10,
+    stationData: [
+      { id:1, name:'MM 1 (Wei\u00df)', color:'#555555', emoji:'\u26aa',
+        months:['Team MM','Team MM','Team MM','Team MM','Team MM','Team MM / Reutlingen','Team MM','Inspektion','Team MM','Team MM','Team MM','Team MM'] },
+      { id:2, name:'MM 2 (Blau)', color:'#44a1d7', emoji:'\ud83d\udfe6',
+        months:['\u2014','\u2014','Emmendingen','Emmendingen','Emmendingen','Emmendingen','Emmendingen','Inspektion','Heidenheim','Heidenheim','Heidenheim','Heidenheim'] },
+      { id:3, name:'MM 3 (Gr\u00fcn)', color:'#80a22b', emoji:'\ud83d\udfe2',
+        months:['\u2014','Tuttlingen','Konstanz','Konstanz','Konstanz','Tuttlingen','Tuttlingen','Inspektion','Stuttgart','Stuttgart','Stuttgart','Stuttgart'] },
+      { id:4, name:'MM 4 (Gelb)', color:'#edab35', emoji:'\ud83d\udfe1',
+        months:['\u2014','\u2014','SMZ Karlsruhe','SMZ Karlsruhe','SMZ Karlsruhe','Calw / Mittelbaden','Calw / Mittelbaden','Inspektion','Karlsruhe-Land','Karlsruhe-Land','Karlsruhe-Land','Karlsruhe-Land'] },
+      { id:5, name:'MM 5 (Orange)', color:'#fd7e14', emoji:'\ud83d\udfe0',
+        months:['\u2014','Heidelberg','Heidelberg','Heidelberg','Zollernalb','Zollernalb','Zollernalb','Inspektion','Crailsheim','Crailsheim','Crailsheim','Crailsheim'] },
+      { id:6, name:'MM 6 (Rot)', color:'#a92626', emoji:'\ud83d\udd34',
+        months:['\u2014','\u2014','L\u00f6rrach','L\u00f6rrach','Ulm','Ulm','Ulm','Inspektion','Rems-Murr-Kreis','Rems-Murr-Kreis','Rems-Murr-Kreis','Rems-Murr-Kreis'] },
+      { id:7, name:'MM 7 (Violett)', color:'#a82a78', emoji:'\ud83d\udfe3',
+        months:['\u2014','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Friedrichshafen','Inspektion','Ravensburg','Ravensburg','Ravensburg','Ravensburg'] },
+      { id:8, name:'MM 8 (Schwarz)', color:'#333333', emoji:'\u26ab',
+        months:['\u2014','\u2014','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Neckar-Odenwald','Emmendingen + Sommerakademie','Freudenstadt','Freudenstadt','Freudenstadt','Freudenstadt'] },
+    ],
+  },
+  '2026/2027': {
+    title: 'Projektjahr 2026/2027', subtitle: '8 Makermobile \u2013 Produktivbetrieb',
+    kpi: { makermobile:8, mz:24, workshops:628, personen:17363 },
+    kpiFrom: { makermobile:0, mz:0, workshops:0, personen:17000 },
+    achieved: { workshops:299, personen:12022 },
+    planned: { workshops:628, personen:17363 },
+    achievedPct: { workshops:'47.6%', personen:'69.2%' },
+    achievedLabel: { workshops:'299', personen:'12.022' },
+    plannedLabel: { workshops:'628', personen:'17.363' },
+    compareLeft: { title:'\u25c4 Pilotjahr 2026 (Zwischenstand)', num:'94', sub:'Workshops (fr\u00fcher Stand)', detail:'<strong>5.063</strong> Personen erreicht<br>Stand: April 2026' },
+    compareRight: { title:'\u25ba Projektjahr 2026/2027', num:'628', sub:'Workshops geplant (Team + MZV)', detail:'<strong>17.363</strong> direkt erreichte Personen (Plan)<br>Team: 37 \u00b7 MZV: 591' },
+    mmEvents: [72,16,25,34,13,22,39,78],
+    mmEventsTotal: 299,
+    mmEventsTitle: 'Veranstaltungen nach Makermobil \u2014 Projektjahr 2026/2027',
+    anfragen: [3,3,7,6,3,4,16,0,0,1,0,1],
+    anfragenTotal: 44, anfragenMax: 20, anfragenStep: 4,
+    formatData: [18,17,7,2],
+    qualiData: [7,10,5,12,8],
+    progressTitle: '\u26a1 Live-Fortschritt Projektjahr 2026/2027',
+    stationTitle: 'Stationierung Projektjahr 2026/2027',
+    anfragenTitle: 'Anfragen nach Startmonat',
+    showAnfragen: true,
+    mmEventsYMax: 80, mmEventsStep: 20,
+    stationData: null, // uses the MM array defined below (current/default)
+  }
+};
+
+let currentYear = '2026/2027';
+
+
 const baseOpts = {
   responsive:true, maintainAspectRatio:false,
   plugins:{ legend:{ labels:{ font:{family:'Inter,sans-serif',size:12}, padding:16 } } }
 };
+
+let monatChartInstance, formatChartInstance, qualiChartInstance, mmEventsChartInstance;
 
 // Monat Chart – sequentielle Animation (Scroll-triggered)
 const monatFinalData  = [3,3,7,6,3,4,16,0,0,1,0,1];
 const monatColors     = ['#d0d8ea','#d0d8ea',C.laser,C.laser,'#d0d8ea',C.studio+'cc',C.druck,'#d0d8ea','#d0d8ea','#d0d8ea','#d0d8ea','#d0d8ea'];
 const monatStartData  = Array(12).fill(0); // alle starten bei 0
 
-const monatChart = new Chart(document.getElementById('monatChart'), {
+monatChartInstance = new Chart(document.getElementById('monatChart'), {
   type:'bar',
   data:{
     labels:['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
@@ -912,8 +1082,8 @@ function animateMonatChart() {
   // Schritt 2: Balken nacheinander einblenden – Jan zuerst (0.5s), dann alle 0.5s
   monatFinalData.forEach((val, idx) => {
     setTimeout(() => {
-      monatChart.data.datasets[0].data[idx] = val;
-      monatChart.update('active');
+      monatChartInstance.data.datasets[0].data[idx] = val;
+      monatChartInstance.update('active');
     }, 500 + idx * 500);
   });
 }
@@ -927,7 +1097,7 @@ if (monatEl) {
 }
 
 // Format Chart
-new Chart(document.getElementById('formatChart'), {
+formatChartInstance = new Chart(document.getElementById('formatChart'), {
   type:'doughnut',
   data:{
     labels:['WarmUp','Making trifft Schule','Sonstiges / Offen','Hackerdays'],
@@ -944,7 +1114,7 @@ new Chart(document.getElementById('formatChart'), {
 });
 
 // Quali Chart
-new Chart(document.getElementById('qualiChart'), {
+qualiChartInstance = new Chart(document.getElementById('qualiChart'), {
   type:'bar',
   data:{
     labels:['Ausbilderschein 1','Qualifizierung TA1','Maker Teacher','Maker Assistant','Making Impuls'],
@@ -965,13 +1135,13 @@ new Chart(document.getElementById('qualiChart'), {
 });
 
 // MM Events Chart
-new Chart(document.getElementById('mmEventsChart'), {
+mmEventsChartInstance = new Chart(document.getElementById('mmEventsChart'), {
   type:'bar',
   data:{
     labels:['MM 1 Wei\u00df','MM 2 Blau','MM 3 Gr\u00fcn','MM 4 Gelb','MM 5 Orange','MM 6 Rot','MM 7 Lila','MM 8 Schwarz'],
     datasets:[{
       label:'Veranstaltungen 2026',
-      data:[53,3,8,10,1,9,9,0],
+      data:[72,16,25,34,13,22,39,78],
       backgroundColor:['#555','#44a1d7','#80a22b','#edab35','#fd7e14','#a92626','#a82a78','#333'],
       borderRadius:10, borderSkipped:false
     }]
@@ -984,6 +1154,152 @@ new Chart(document.getElementById('mmEventsChart'), {
     }
   }
 });
+
+
+// ═══════════════════════════════════════
+//  TAB SWITCHING
+// ═══════════════════════════════════════
+function switchYear(year) {
+  currentYear = year;
+  const Y = YEARS[year];
+  if (!Y) return;
+
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.year === year);
+  });
+
+  // === KPI ROW ===
+  const kpiEls = document.querySelectorAll('[data-count]');
+  const kpiKeys = ['makermobile','mz','workshops','personen'];
+  kpiEls.forEach((el, i) => {
+    const key = kpiKeys[i];
+    if (!key) return;
+    el.dataset.count = Y.kpi[key];
+    el.dataset.from = Y.kpiFrom[key] || 0;
+    // Animate
+    const target = Y.kpi[key];
+    const from = Y.kpiFrom[key] || 0;
+    const dur = 1200;
+    const start = performance.now();
+    (function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const ep = 1 - Math.pow(1 - p, 3);
+      const v = Math.round(from + (target - from) * ep);
+      el.textContent = v.toLocaleString('de-DE');
+      if (p < 1) requestAnimationFrame(tick);
+    })(performance.now());
+  });
+
+  // === COMPARE BOXES ===
+  const clt = document.getElementById('compareLeftTitle');
+  if (clt) clt.innerHTML = Y.compareLeft.title;
+  const cln = document.getElementById('compareLeftNum');
+  if (cln) cln.textContent = Y.compareLeft.num;
+  const cls = document.getElementById('compareLeftSub');
+  if (cls) cls.textContent = Y.compareLeft.sub;
+  const cld = document.getElementById('compareLeftDetail');
+  if (cld) cld.innerHTML = Y.compareLeft.detail;
+  const crt = document.getElementById('compareRightTitle');
+  if (crt) crt.innerHTML = Y.compareRight.title;
+  const crn = document.getElementById('compareRightNum');
+  if (crn) crn.textContent = Y.compareRight.num;
+  const crs = document.getElementById('compareRightSub');
+  if (crs) crs.textContent = Y.compareRight.sub;
+  const crd = document.getElementById('compareRightDetail');
+  if (crd) crd.innerHTML = Y.compareRight.detail;
+
+  // === PROGRESS BARS ===
+  const pt = document.getElementById('progressTitle');
+  if (pt) {
+    pt.innerHTML = Y.progressTitle + ' <span style="font-weight:400;color:#9ca3af">(aus Veranstaltungsmeldungen)</span>';
+  }
+  // Workshops progress
+  const progRows = document.querySelectorAll('.progress-wrap');
+  // First progress-wrap in the compare section
+  const wsProgress = document.querySelector('.progress-section');
+  if (wsProgress) {
+    const labels = wsProgress.querySelectorAll('.progress-label-row');
+    if (labels[0]) {
+      labels[0].querySelector('span:last-child').innerHTML =
+        '<strong style="color:#80a22b">' + Y.achievedLabel.workshops + '</strong> <span style="color:#b0b8c8">/ ' + Y.plannedLabel.workshops + ' geplant (' + Y.achievedPct.workshops.replace('%','') + '&nbsp;%)</span>';
+    }
+    if (labels[1]) {
+      labels[1].querySelector('span:last-child').innerHTML =
+        '<strong style="color:#80a22b">' + Y.achievedLabel.personen + '</strong> <span style="color:#b0b8c8">/ ' + Y.plannedLabel.personen + ' geplant (' + Y.achievedPct.personen.replace('%','') + '&nbsp;%)</span>';
+    }
+    const bars = wsProgress.querySelectorAll('.compare-achieved');
+    if (bars[0]) { bars[0].dataset.target = Y.achievedPct.workshops; bars[0].style.width = Y.achievedPct.workshops; }
+    if (bars[1]) { bars[1].dataset.target = Y.achievedPct.personen; bars[1].style.width = Y.achievedPct.personen; }
+  }
+
+  // === STATIONIERUNG ===
+  const st = document.getElementById('stationTitle');
+  if (st) st.textContent = Y.stationTitle;
+  // Swap MM data
+  const stData = Y.stationData || YEARS['2026/2027'].stationData || MM;
+  if (Y.stationData) {
+    MM.length = 0;
+    stData.forEach(m => MM.push(m));
+  }
+  // Rebuild location filter
+  const allL = new Set();
+  MM.forEach(mm => mm.months.forEach(l => { if(l && l!=='\u2014' && l!=='Inspektion') allL.add(l); }));
+  const lkS = document.getElementById('filterLK');
+  if (lkS) {
+    lkS.innerHTML = '<option value="all">Alle Standorte</option>';
+    [...allL].sort().forEach(l => {
+      const o = document.createElement('option'); o.value = o.textContent = l; lkS.appendChild(o);
+    });
+  }
+  renderStation();
+
+  // === ANFRAGEN CHART ===
+  const at = document.getElementById('anfragenTitle');
+  if (at) at.textContent = Y.anfragenTitle;
+  const monatCanvas = document.getElementById('monatChart');
+  if (monatCanvas && monatChartInstance) {
+    monatChartInstance.data.datasets[0].data = [...Y.anfragen];
+    monatChartInstance.options.scales.y.max = Y.anfragenMax;
+    monatChartInstance.options.scales.y.ticks.stepSize = Y.anfragenStep;
+    monatChartInstance.options.plugins.subtitle.text = Y.showAnfragen
+      ? 'Summe: ' + Y.anfragenTotal + ' unverbindliche Anfragen nach geplantem Startmonat'
+      : 'Keine Anfragedaten f\u00fcr diesen Zeitraum';
+    monatChartInstance.update();
+  }
+  const badge = document.querySelector('#mmEventsBadge');
+
+  // === FORMAT CHART ===
+  if (formatChartInstance) {
+    formatChartInstance.data.datasets[0].data = [...Y.formatData];
+    formatChartInstance.update();
+  }
+
+  // === QUALI CHART ===
+  if (qualiChartInstance) {
+    qualiChartInstance.data.datasets[0].data = [...Y.qualiData];
+    qualiChartInstance.update();
+  }
+
+  // === MM EVENTS CHART ===
+  const met = document.getElementById('mmEventsTitle');
+  if (met) met.textContent = Y.mmEventsTitle;
+  const meb = document.getElementById('mmEventsBadge');
+  if (meb) meb.textContent = Y.mmEventsTotal + ' Veranstaltungen total';
+  if (mmEventsChartInstance) {
+    mmEventsChartInstance.data.datasets[0].data = [...Y.mmEvents];
+    if (Y.mmEventsYMax) {
+      mmEventsChartInstance.options.scales.y.suggestedMax = Y.mmEventsYMax;
+      mmEventsChartInstance.options.scales.y.ticks.stepSize = Y.mmEventsStep || 10;
+    }
+    mmEventsChartInstance.update();
+  }
+
+  // === ANFRAGEN BADGE ===
+  const anfBadge = document.getElementById('anfragenBadge');
+  if (anfBadge) anfBadge.textContent = Y.anfragenTotal + ' gesamt';
+}
+
 </script>
 </body>
 </html>
