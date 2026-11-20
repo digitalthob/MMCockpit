@@ -23,24 +23,25 @@ window.MM_COCKPIT_DATA = {
 
   /* ── Flotte ─────────────────────────────────────────────────────── */
   makermobile: [
-    { id: 1, name: "MM 1", farbe: "Weiß",    color: "#6b7280" },
-    { id: 2, name: "MM 2", farbe: "Blau",    color: "#44a1d7" },
-    { id: 3, name: "MM 3", farbe: "Grün",    color: "#80a22b" },
-    { id: 4, name: "MM 4", farbe: "Gelb",    color: "#edab35" },
-    { id: 5, name: "MM 5", farbe: "Orange",  color: "#fd7e14" },
-    { id: 6, name: "MM 6", farbe: "Rot",     color: "#a92626" },
-    { id: 7, name: "MM 7", farbe: "Violett", color: "#a82a78" },
-    { id: 8, name: "MM 8", farbe: "Schwarz", color: "#1f2937" },
+    // Farben = Markenfarben von makermobil.de
+    { id: 1, name: "MM 1", farbe: "Weiß",    color: "#A8A8A8" },
+    { id: 2, name: "MM 2", farbe: "Blau",    color: "#4BA1D3" },
+    { id: 3, name: "MM 3", farbe: "Grün",    color: "#809F33" },
+    { id: 4, name: "MM 4", farbe: "Gelb",    color: "#F5D04A" },
+    { id: 5, name: "MM 5", farbe: "Orange",  color: "#EDA554" },
+    { id: 6, name: "MM 6", farbe: "Rot",     color: "#B52726" },
+    { id: 7, name: "MM 7", farbe: "Pink",    color: "#CB549B" },
+    { id: 8, name: "MM 8", farbe: "Schwarz", color: "#262626" },
   ],
 
-  // Die fünf Werkstatt-Module + Studio (Farben = Modulfarben im Design)
+  // Die fünf Making-Module + Studio (Namen, Farben und Illustrationen wie auf makermobil.de)
   module: [
-    { name: "Druck",       color: "#44a1d7" },
-    { name: "Grafik",      color: "#a82a78" },
-    { name: "Laser",       color: "#edab35" },
-    { name: "Mechatronik", color: "#a92626" },
-    { name: "Textil",      color: "#80a22b" },
-    { name: "Studio",      color: "#e6c200" },
+    { name: "3D-Druck",    color: "#4BA1D3", bild: "module/3d-druck.webp" },
+    { name: "Grafik",      color: "#CB549B", bild: "module/grafik.webp" },
+    { name: "Lasercutter", color: "#EDA554", bild: "module/lasercutter.webp" },
+    { name: "Mechatronik", color: "#B52726", bild: "module/mechatronik.webp" },
+    { name: "Sticken",     color: "#809F33", bild: "module/sticken.webp" },
+    { name: "Studio",      color: "#F7DB67", bild: "module/studio.webp", info: "Ton- und Filmstudio" },
   ],
 
   /* ── Standorte (Medienzentren) ──────────────────────────────────────
@@ -120,7 +121,7 @@ window.MM_COCKPIT_DATA = {
     { datum: "2023",    titel: "Projektstart im Innovationsprogramm",
       text: "Start des Projekts „mobile Makerspaces“. Entwicklung eines Prototyp-Fahrzeugs mit fünf Modulen und Studio." },
     { datum: "2024-09", titel: "Das Team Makermobil startet",
-      text: "Übernahme von 1 Prototyp-Fahrzeug, 5 Prototyp-Modulen (Druck, Grafik, Laser, Mechatronik, Textil) und Studio." },
+      text: "Übernahme von 1 Prototyp-Fahrzeug, 5 Prototyp-Modulen (3D-Druck, Grafik, Lasercutter, Mechatronik, Sticken) und Studio." },
     { datum: "2024/25", titel: "Weiterentwickeln, verbessern, testen",
       text: "Fahrzeug und Module werden im Praxiseinsatz weiterentwickelt und erprobt." },
     { datum: "2025",    titel: "Testphase & erste Workshops",
@@ -139,7 +140,7 @@ window.MM_COCKPIT_DATA = {
       tab: "2023/24",
       label: "Prototyp & Aufbau",
       titel: "Prototyp & Aufbau 2023–2024",
-      color: "#9ca3af",
+      color: "#A8A8A8",
       makermobile: 1,              // Prototyp-Fahrzeug
       module: 5,
       studio: true,
@@ -153,7 +154,7 @@ window.MM_COCKPIT_DATA = {
       tab: "2025",
       label: "Testphase",
       titel: "Testphase 2025",
-      color: "#44a1d7",
+      color: "#4BA1D3",
       makermobile: 3,
       medienzentren: 2,
       workshops:  { ist: 53,   plan: null, pruefen: true },
@@ -173,7 +174,7 @@ window.MM_COCKPIT_DATA = {
       tab: "2026",
       label: "Pilotjahr",
       titel: "Pilotjahr 2026",
-      color: "#edab35",
+      color: "#F7DB67",
       makermobile: 8,
       medienzentren: 24,
       workshops:  { ist: 299,   plan: 628 },
@@ -200,9 +201,9 @@ window.MM_COCKPIT_DATA = {
       qualifizierung: [
         { name: "Ausbilderschein 1", wert: 7 },
         { name: "Qualifizierung TA1", wert: 10 },
-        { name: "Maker Teacher", wert: 5 },
-        { name: "Maker Assistant", wert: 12 },
-        { name: "Making Impuls", wert: 8 },
+        { name: "Maker Teacher", wert: 5, badge: "badges/maker-teacher.webp" },
+        { name: "Maker Assistant", wert: 12, badge: "badges/maker-assistant.webp" },
+        { name: "Making Impuls", wert: 8, badge: "badges/making-impuls.webp" },
       ],
     },
   ],

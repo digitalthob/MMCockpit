@@ -4,24 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Makermobil Cockpit</title>
-<meta name="description" content="Projektbilanz der Makermobile – mobile Makerspaces in Baden-Württemberg 2023–2026.">
-<link rel="icon" href="assets/img/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<meta name="description" content="Projektbilanz der Makermobile – mobile Makerspaces für Bildungseinrichtungen in Baden-Württemberg 2023–2026.">
+<link rel="icon" href="assets/img/mm-hex.svg" type="image/svg+xml">
+<!-- Alle Ressourcen liegen lokal im Projekt (keine Google Fonts, kein CDN). -->
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="assets/css/cockpit.css">
 </head>
 <body class="mmc-standalone">
 
 <!-- Das Cockpit wird komplett per JavaScript in diesen Container gerendert.
-     Für WordPress: diesen <div> + die Skripte unten in die Seite einbinden. -->
+     Für WordPress: diesen <div> + die Skripte unten in die Seite einbinden
+     (optional data-base="/pfad/zum/cockpit/" setzen, falls die Bilder nicht gefunden werden). -->
 <div id="mm-cockpit" class="mmc">
   <noscript><p style="padding:24px">Bitte JavaScript aktivieren, um das Makermobil Cockpit anzuzeigen.</p></noscript>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="assets/vendor/chart.umd.min.js"></script>
+<script src="assets/vendor/leaflet/leaflet.js"></script>
 <script src="data/cockpit-data.js"></script>
 <script src="assets/js/cockpit.js"></script>
 </body>
