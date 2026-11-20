@@ -14,11 +14,14 @@ window.MM_COCKPIT_DATA = {
 
   meta: {
     titel: "Makermobil Cockpit",
-    untertitel: "Projektbilanz mobile Makerspaces 2023–2026",
+    untertitel: "Bilanz der Innovationsphase 2023–2026 · Ausblick Produktivphase 2027",
+    // Rahmen: Makermobil ist ein Innovationsprojekt im Rahmen von „Digitale Schule“ des Kultusministeriums BW
+    programm: "„Digitale Schule“ des Kultusministeriums Baden-Württemberg",
     traeger: "LMZ Baden-Württemberg",
     datenstand: "2026-10-02",      // Datum der letzten Datenerhebung (JJJJ-MM-TT)
     vorlaeufig: true,              // true = Banner „vorläufige Zahlen“ anzeigen
-    laufzeit: { von: "2023-01", bis: "2026-12" },
+    laufzeit: { von: "2023-01", bis: "2026-12" },   // Innovationsphase (Entwicklungsphase)
+    produktivAb: "2027-01",                          // Start der Produktivphase
   },
 
   /* ── Flotte ─────────────────────────────────────────────────────── */
@@ -64,6 +67,7 @@ window.MM_COCKPIT_DATA = {
     "Neckar-Odenwald": { name: "Neckar-Odenwald-Kreis",  typ: "mz", coords: [49.35, 9.15] },
     "Freudenstadt":    { name: "Freudenstadt",           typ: "mz", coords: [48.466, 8.41] },
     "Rems-Murr-Kreis": { name: "Rems-Murr-Kreis",        typ: "mz", coords: [48.871, 9.431] },
+    "Freiburg":        { name: "Freiburg",               typ: "mz", coords: [47.999, 7.842] },
     // weitere Standorte aus früheren Planständen (für Excel-Import vorgehalten)
     "Heidelberg":      { name: "Heidelberg",             typ: "mz", coords: [49.398, 8.672] },
     "Crailsheim":      { name: "Crailsheim",             typ: "mz", coords: [49.135, 10.071] },
@@ -76,8 +80,9 @@ window.MM_COCKPIT_DATA = {
      Ein Eintrag = ein Makermobil an einem Ort von Monat „von“ bis „bis“
      (jeweils einschließlich). workshops/personen je Station, sobald
      die Excel-Auswertung vorliegt.
-     STAND: vorläufig, übernommen aus Planstand Oktober 2026 – bitte
-     mit der Excel-Datei abgleichen. */
+     STAND: vorläufig. Bis Aug. 2026 aus Planstand Oktober 2026, ab Sep. 2026
+     abgeglichen mit der Standortliste auf makermobil.de (20.11.2026).
+     pruefen: true = Eintrag widerspricht einer anderen Quelle → mit Excel klären. */
   belegungen: [
     // 2025
     { mm: 1, ort: "Team MM",         von: "2025-01", bis: "2025-07", workshops: null, personen: null, notiz: "" },
@@ -88,18 +93,19 @@ window.MM_COCKPIT_DATA = {
     { mm: 1, ort: "Team MM",         von: "2026-02", bis: "2026-05", workshops: null, personen: null, notiz: "" },
     { mm: 1, ort: "Calw",            von: "2026-06", bis: "2026-07", workshops: null, personen: null, notiz: "" },
     { mm: 1, ort: "Inspektion",      von: "2026-08", bis: "2026-08", workshops: null, personen: null, notiz: "" },
-    { mm: 1, ort: "Team MM",         von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 1, ort: "Team MM",         von: "2026-09", bis: "2027-12", workshops: null, personen: null, notiz: "dauerhaft beim Team Makermobil" },
     { mm: 2, ort: "Emmendingen",     von: "2026-03", bis: "2026-08", workshops: null, personen: null, notiz: "August: Ferienprogramm" },
-    { mm: 2, ort: "Rems-Murr-Kreis", von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 2, ort: "Rems-Murr-Kreis", von: "2026-09", bis: "2026-09", workshops: null, personen: null, notiz: "Planstand Okt. 2026; laut makermobil.de ab Okt. in Ravensburg", pruefen: true },
+    { mm: 2, ort: "Ravensburg",      von: "2026-10", bis: "2027-01", workshops: null, personen: null, notiz: "laut makermobil.de" },
     { mm: 3, ort: "Tuttlingen",      von: "2026-02", bis: "2026-02", workshops: null, personen: null, notiz: "" },
     { mm: 3, ort: "Konstanz",        von: "2026-03", bis: "2026-05", workshops: null, personen: null, notiz: "" },
     { mm: 3, ort: "Tuttlingen",      von: "2026-06", bis: "2026-07", workshops: null, personen: null, notiz: "" },
     { mm: 3, ort: "Inspektion",      von: "2026-08", bis: "2026-08", workshops: null, personen: null, notiz: "" },
-    { mm: 3, ort: "Tuttlingen",      von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 3, ort: "Tuttlingen",      von: "2026-09", bis: "2027-07", workshops: null, personen: null, notiz: "Kooperation KMZ Konstanz + Tuttlingen" },
     { mm: 4, ort: "SMZ Karlsruhe",   von: "2026-03", bis: "2026-05", workshops: null, personen: null, notiz: "" },
     { mm: 4, ort: "Team MM",         von: "2026-06", bis: "2026-07", workshops: null, personen: null, notiz: "" },
     { mm: 4, ort: "Inspektion",      von: "2026-08", bis: "2026-08", workshops: null, personen: null, notiz: "" },
-    { mm: 4, ort: "SMZ Karlsruhe",   von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 4, ort: "SMZ Karlsruhe",   von: "2026-09", bis: "2027-02", workshops: null, personen: null, notiz: "Kooperation SMZ Karlsruhe + KA-Land, Calw, Mittelbaden, Pforzheim" },
     { mm: 5, ort: "Rhein-Neckar",    von: "2026-02", bis: "2026-05", workshops: null, personen: null, notiz: "" },
     { mm: 5, ort: "Zollernalb",      von: "2026-06", bis: "2026-06", workshops: null, personen: null, notiz: "" },
     { mm: 5, ort: "Rhein-Neckar",    von: "2026-07", bis: "2026-07", workshops: null, personen: null, notiz: "" },
@@ -107,19 +113,20 @@ window.MM_COCKPIT_DATA = {
     { mm: 6, ort: "Lörrach",         von: "2026-02", bis: "2026-04", workshops: null, personen: null, notiz: "" },
     { mm: 6, ort: "Ulm",             von: "2026-05", bis: "2026-07", workshops: null, personen: null, notiz: "" },
     { mm: 6, ort: "Inspektion",      von: "2026-08", bis: "2026-08", workshops: null, personen: null, notiz: "" },
-    { mm: 6, ort: "Ravensburg",      von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 6, ort: "Ravensburg",      von: "2026-09", bis: "2026-10", workshops: null, personen: null, notiz: "Planstand Okt. 2026; laut makermobil.de ab Nov. in Freiburg", pruefen: true },
+    { mm: 6, ort: "Freiburg",        von: "2026-11", bis: "2027-01", workshops: null, personen: null, notiz: "laut makermobil.de" },
     { mm: 7, ort: "Friedrichshafen", von: "2026-02", bis: "2026-07", workshops: null, personen: null, notiz: "" },
     { mm: 7, ort: "Inspektion",      von: "2026-08", bis: "2026-08", workshops: null, personen: null, notiz: "" },
-    { mm: 7, ort: "Heidenheim",      von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 7, ort: "Heidenheim",      von: "2026-09", bis: "2027-01", workshops: null, personen: null, notiz: "" },
     { mm: 8, ort: "Neckar-Odenwald", von: "2026-03", bis: "2026-07", workshops: null, personen: null, notiz: "" },
     { mm: 8, ort: "Inspektion",      von: "2026-08", bis: "2026-08", workshops: null, personen: null, notiz: "" },
-    { mm: 8, ort: "Freudenstadt",    von: "2026-09", bis: "2026-12", workshops: null, personen: null, notiz: "" },
+    { mm: 8, ort: "Freudenstadt",    von: "2026-09", bis: "2027-01", workshops: null, personen: null, notiz: "" },
   ],
 
   /* ── Meilensteine (Projektgeschichte) ───────────────────────────── */
   meilensteine: [
-    { datum: "2023",    titel: "Projektstart im Innovationsprogramm",
-      text: "Start des Projekts „mobile Makerspaces“. Entwicklung eines Prototyp-Fahrzeugs mit fünf Modulen und Studio." },
+    { datum: "2023",    titel: "Start der Innovationsphase",
+      text: "Makermobil startet als Innovationsprojekt im Rahmen von „Digitale Schule“ des Kultusministeriums Baden-Württemberg. Entwicklung eines Prototyp-Fahrzeugs mit fünf Modulen und Studio." },
     { datum: "2024-09", titel: "Das Team Makermobil startet",
       text: "Übernahme von 1 Prototyp-Fahrzeug, 5 Prototyp-Modulen (3D-Druck, Grafik, Lasercutter, Mechatronik, Sticken) und Studio." },
     { datum: "2024/25", titel: "Weiterentwickeln, verbessern, testen",
@@ -128,8 +135,10 @@ window.MM_COCKPIT_DATA = {
       text: "3 Makermobile im Einsatz, erste Workshops mit Schulen und Medienzentren." },
     { datum: "2026",    titel: "Pilotjahr: 8 Makermobile",
       text: "Die Flotte ist komplett. 24 Medienzentren nutzen die Makermobile für jeweils 2–6 Monate." },
-    { datum: "2026-12", titel: "Projektabschluss",
-      text: "Ende der Projektlaufzeit." },
+    { datum: "2026-12", titel: "Abschluss der Innovationsphase",
+      text: "Die Entwicklungsphase ist abgeschlossen: Flotte, Module, Lernformate und Medienzentren-Netzwerk stehen." },
+    { datum: "2027",    titel: "Start der Produktivphase",
+      text: "Die Makermobile gehen in den Regelbetrieb. Neu ab Schuljahr 2027: das Lernformat Hackerdays." },
   ],
 
   /* ── Kennzahlen je Projektphase ─────────────────────────────────────
@@ -206,5 +215,78 @@ window.MM_COCKPIT_DATA = {
         { name: "Making Impuls", wert: 8, badge: "badges/making-impuls.webp" },
       ],
     },
+    {
+      key: "2027",
+      typ: "ausblick",
+      tab: "2027",
+      label: "Ausblick",
+      titel: "Produktivphase ab 2027",
+      color: "#CB549B",
+      makermobile: 8,
+      medienzentren: null,
+      workshops:  { ist: null, plan: null },
+      personen:   { ist: null, plan: null },
+    },
   ],
+
+  /* ── Ausblick & Verstetigung (Produktivphase ab 2027) ──────────────
+     Quelle: makermobil.de (Stand 20.11.2026). Planwerte ergänzen, sobald bekannt. */
+  ausblick: {
+    text: "Mit dem Ende der Innovationsphase gehen die Makermobile 2027 in die Produktivphase. Was in der Entwicklungsphase entstanden ist – Flotte, Module, Lernformate, Materialien und das Netzwerk der Medienzentren – wird zum Regelangebot für Schulen in Baden-Württemberg.",
+
+    // Planwerte Produktivphase 2027 (null = noch offen → „Daten folgen“)
+    ziele: {
+      workshops: null,
+      personen: null,
+      medienzentren: null,
+    },
+
+    // Lernformate laut makermobil.de
+    lernformate: [
+      { name: "Warm Ups", icon: "flame", color: "#EDA554",
+        text: "Einstieg ins Making: Module kennenlernen, Techniken ausprobieren.",
+        status: "verfügbar", anzahl: 17, einheit: "Warm Ups online", detail: "davon 10 mit PDF-Anleitung" },
+      { name: "Making trifft Schule", icon: "book", color: "#809F33",
+        text: "Bildungsplaninhalte praktisch erfahrbar machen – Projekte für bis zu drei Unterrichtsstunden, Klasse 3 bis 13.",
+        status: "verfügbar", anzahl: 7, einheit: "Projekte", detail: "2 verfügbar, 5 in Vorbereitung" },
+      { name: "Hackerdays", icon: "laptop", color: "#4BA1D3",
+        text: "Eigene Projekte umsetzen. Das neue Format wird gerade entwickelt.",
+        status: "neu ab 2027", anzahl: null, einheit: "", detail: "Start ab Schuljahr 2027" },
+    ],
+
+    // Anfragen / Planungen ohne festen Zeitraum
+    planung: [
+      { mm: 5, text: "Interesse Medienzentrum Mannheim / Heidelberg", zeitraum: null },
+    ],
+
+    // Medienzentren auf der Standortkarte von makermobil.de
+    netzwerk: [
+      { name: "KMZ Bodenseekreis",          ort: "Friedrichshafen",      coords: [47.654, 9.479] },
+      { name: "KMZ Emmendingen",            ort: "Emmendingen",          coords: [48.121, 7.849] },
+      { name: "KMZ Esslingen",              ort: "Plochingen",           coords: [48.712, 9.419] },
+      { name: "KMZ Freiburg",               ort: "Freiburg",             coords: [47.999, 7.842] },
+      { name: "KMZ Freudenstadt",           ort: "Freudenstadt",         coords: [48.463, 8.411] },
+      { name: "KMZ Göppingen",              ort: "Göppingen",            coords: [48.703, 9.652] },
+      { name: "KMZ Hohenlohekreis",         ort: "Künzelsau",            coords: [49.281, 9.690] },
+      { name: "KMZ Landkreis Karlsruhe",    ort: "Bruchsal",             coords: [49.124, 8.598] },
+      { name: "KMZ Main-Tauber-Kreis",      ort: "Tauberbischofsheim",   coords: [49.623, 9.662] },
+      { name: "KMZ Neckar-Odenwald-Kreis",  ort: "Mosbach",              coords: [49.353, 9.151] },
+      { name: "KMZ Ortenaukreis",           ort: "Offenburg",            coords: [48.473, 7.944] },
+      { name: "KMZ Ostalbkreis",            ort: "Schwäbisch Gmünd",     coords: [48.799, 9.798] },
+      { name: "KMZ Ravensburg",             ort: "Ravensburg",           coords: [47.782, 9.612] },
+      { name: "KMZ Rems-Murr-Kreis",        ort: "Waiblingen",           coords: [48.830, 9.317] },
+      { name: "KMZ Reutlingen",             ort: "Reutlingen",           coords: [48.491, 9.204] },
+      { name: "KMZ Schwarzwald-Baar",       ort: "Donaueschingen",       coords: [47.953, 8.503] },
+      { name: "KMZ Schwäbisch Hall",        ort: "Crailsheim",           coords: [49.135, 10.071] },
+      { name: "KMZ Sigmaringen",            ort: "Sigmaringen",          coords: [48.087, 9.216] },
+      { name: "KMZ Tuttlingen",             ort: "Tuttlingen",           coords: [47.985, 8.818] },
+      { name: "KMZ Ulm",                    ort: "Ulm",                  coords: [48.398, 9.991] },
+      { name: "KMZ Zollernalbkreis",        ort: "Albstadt",             coords: [48.257, 9.023] },
+      { name: "Medienzentrum Heidelberg",   ort: "Heidelberg",           coords: [49.398, 8.672] },
+      { name: "Medienzentrum Heidenheim",   ort: "Heidenheim",           coords: [48.676, 10.152] },
+      { name: "SMZ Karlsruhe",              ort: "Karlsruhe",            coords: [49.009, 8.404] },
+      { name: "SMZ Mannheim",               ort: "Mannheim",             coords: [49.488, 8.466] },
+      { name: "SMZ Stuttgart",              ort: "Stuttgart",            coords: [48.783, 9.205] },
+    ],
+  },
 };

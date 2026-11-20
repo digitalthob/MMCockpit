@@ -38,6 +38,11 @@
     layers: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
     mail: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
     tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+    flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+    book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+    laptop: '<rect x="3" y="4" width="18" height="12" rx="2"/><line x1="1" y1="20" x2="23" y2="20"/>',
+    rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+    network: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',
     list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
   };
   const hexIcon = (name, color, iconColor) =>
@@ -85,7 +90,11 @@
   const firstStart = (items, key) => Math.min(...items.filter((x) => x.ort === key).map((x) => x.a));
 
   const PHASES = D.phasen;
+  const PAST = PHASES.filter((p) => p.typ !== "ausblick");          // Innovationsphase
+  const LAST = PAST[PAST.length - 1];
   const phaseYear = (p) => (/^\d{4}$/.test(p.key) ? Number(p.key) : null);
+  const PROD = D.meta.produktivAb ? ymIdx(D.meta.produktivAb) : null;  // Start Produktivphase
+  const pruef = (b) => (b.pruefen ? `<span class="mmc-flag" title="${esc(b.notiz || "Angabe wird noch geprüft")}">*</span>` : "");
   const flag = (obj, hint) => (obj && obj.pruefen ? `<span class="mmc-flag" title="${esc(hint || "Wert wird noch geprüft")}">*</span>` : "");
   const LZ_VON = idxYear(ymIdx(D.meta.laufzeit.von)), LZ_BIS = idxYear(ymIdx(D.meta.laufzeit.bis));
 
@@ -134,11 +143,11 @@
       ${deco}
       <div class="mmc-hero-inner">
         <div>
-          <div class="mmc-eyebrow">Projektbilanz · Innovationsprogramm ${LZ_VON}–${LZ_BIS}</div>
+          <div class="mmc-eyebrow">Innovationsphase ${LZ_VON}–${LZ_BIS} · Produktivphase ab ${PROD ? idxYear(PROD) : LZ_BIS + 1}</div>
           <h1 class="mmc-h">${esc(D.meta.titel)}</h1>
-          <p class="mmc-hero-lead">Mobile Makerspaces für Bildungseinrichtungen in Baden-Württemberg:
+          <p class="mmc-hero-lead">Bilanz der Entwicklungsphase des Innovationsprojekts Makermobil im Rahmen von ${esc(D.meta.programm || "")}:
             vom <strong>Prototyp mit fünf Modulen und Studio</strong> zur Flotte von
-            <strong>${PHASES[PHASES.length - 1].makermobile} Makermobilen</strong>.</p>
+            <strong>${LAST.makermobile} Makermobilen</strong> – ab ${PROD ? idxYear(PROD) : LZ_BIS + 1} im Produktivbetrieb.</p>
           ${D.meta.vorlaeufig ? `<div class="mmc-pill"><span class="mmc-tag mmc-tag-warn">Vorläufig</span>
             <span>Finale Projektzahlen folgen. Mit <strong style="color:${C.red}">*</strong> markierte Werte werden noch geprüft.</span></div>` : ""}
         </div>
@@ -162,7 +171,7 @@
           <img class="mmc-footer-hex" src="${IMG("mm-hex.svg")}" alt="">
         </div>
         <div class="mmc-footer-meta">
-          <span>${esc(D.meta.titel)} · Projektlaufzeit ${LZ_VON}–${LZ_BIS} · Datenstand ${fmtDate(D.meta.datenstand)}</span>
+          <span>${esc(D.meta.titel)} · Innovationsphase ${LZ_VON}–${LZ_BIS} · Produktivphase ab ${PROD ? idxYear(PROD) : LZ_BIS + 1} · Datenstand ${fmtDate(D.meta.datenstand)}</span>
           <a href="https://makermobil.de">makermobil.de</a>
         </div>
       </div>
@@ -191,7 +200,8 @@
     if (tab.key === "bilanz") renderBilanz();
     else {
       const p = PHASES.find((x) => x.key === tab.key);
-      if (phaseYear(p)) renderYear(p); else renderAufbau(p);
+      if (p.typ === "ausblick") renderAusblick(p);
+      else if (phaseYear(p)) renderYear(p); else renderAufbau(p);
     }
     animate(view);
   }
@@ -302,6 +312,9 @@
     const now = new Date();
     const nowIdx = now.getFullYear() * 12 + now.getMonth() + (now.getDate() - 1) / 31;
     const today = nowIdx >= from && nowIdx < to + 1 ? `<div class="mmc-g-today" style="left:${L(nowIdx)}%" title="heute"></div>` : "";
+    // Produktivphase im Zeitstrahl hinterlegen
+    const fut = PROD != null && PROD <= to ? `<div class="mmc-g-future" style="left:${L(Math.max(PROD, from))}%"></div>` : "";
+    if (fut && PROD >= from) head += `<div class="mmc-g-futlabel" style="left:${L(PROD)}%">Produktivphase →</div>`;
 
     let rows;
     if (mode === "mm") {
@@ -334,16 +347,17 @@
         const a = Math.max(b.a, from), z = Math.min(b.z, to);
         const m = mmById(b.mm);
         const n = months(b, from, to);
-        const cls = b.typ === "team" ? " is-team" : b.typ === "service" ? " is-service" : "";
+        const cls = (b.typ === "team" ? " is-team" : b.typ === "service" ? " is-service" : "") +
+          (b.z > to ? " cont-r" : "") + (b.a < from ? " cont-l" : "");
         const txt = mode === "mm" ? (b.typ === "team" ? "Team MM" : ort(b.ort).name) : m.name;
-        const label = `${txt}${n > 1 ? " · " + n + " Mon." : ""}`;
+        const label = `${b.a < from ? "← " : ""}${txt}${b.pruefen ? " *" : ""}${n > 1 ? " · " + n + " Mon." : ""}${b.z > to ? " →" : ""}`;
         const aria = `${mmLabel(m)} – ${ort(b.ort).name}, ${fmtRange(b.a, b.z)} (${months(b, -Infinity, Infinity)} Monate)`;
         return `<button type="button" class="mmc-g-bar${cls}" data-i="${b.i}" style="left:calc(${L(a)}% + 1px);width:calc(${((z - a + 1) / total) * 100}% - 2px);top:${5 + b._lane * 30}px;--bar:${m.color};--bar-text:${textOn(m.color)}" title="${esc(aria)}" aria-label="${esc(aria)}">${esc(label)}</button>`;
       }).join("");
-      return `<div class="mmc-g-row"><div class="mmc-g-label">${r.label}</div><div class="mmc-g-track" style="height:${h}px">${grid}${today}${bars}</div></div>`;
+      return `<div class="mmc-g-row"><div class="mmc-g-label">${r.label}</div><div class="mmc-g-track" style="height:${h}px">${fut}${grid}${today}${bars}</div></div>`;
     }).join("");
 
-    el.innerHTML = `<div class="mmc-g-row mmc-g-head"><div class="mmc-g-label"></div><div class="mmc-g-track">${head}</div></div>` +
+    el.innerHTML = `<div class="mmc-g-row mmc-g-head"><div class="mmc-g-label"></div><div class="mmc-g-track">${fut}${head}</div></div>` +
       (html || `<div style="padding:16px">${empty("Keine Belegungen im gewählten Zeitraum.")}</div>`);
 
     detail.hidden = true;
@@ -357,7 +371,7 @@
           <div><span>Dauer</span><strong>${months(b, -Infinity, Infinity)} Monat(e)</strong></div>
           <div><span>Workshops</span><strong>${num(b.workshops)}</strong></div>
           <div><span>Personen erreicht</span><strong>${num(b.personen)}</strong></div>
-        </div>${b.notiz ? `<div style="margin-top:10px;color:#5c5c5c">${esc(b.notiz)}</div>` : ""}`;
+        </div>${b.notiz ? `<div style="margin-top:10px;color:#5c5c5c">${pruef(b)} ${esc(b.notiz)}</div>` : ""}`;
       detail.hidden = false;
     }));
   }
@@ -382,7 +396,7 @@
       <tbody>${rows.map((r) => `<tr>
         <td>${esc(ort(r.k).name)}</td>
         <td>${r.mms.map(mmTag).join(" ")}</td>
-        <td>${r.its.map((b) => fmtRange(b.a, b.z) + (b.notiz ? ` <span class="mmc-muted">(${esc(b.notiz)})</span>` : "")).join("<br>")}</td>
+        <td>${r.its.map((b) => fmtRange(Math.max(b.a, from), Math.min(b.z, to)) + pruef(b) + (b.z > to ? ` <span class="mmc-muted">(weiter bis ${idxLabel(b.z)})</span>` : "") + (b.notiz ? ` <span class="mmc-muted">(${esc(b.notiz)})</span>` : "")).join("<br>")}</td>
         <td class="num">${r.mon}</td><td class="num">${num(r.ws)}</td><td class="num">${num(r.ps)}</td></tr>`).join("")}
       </tbody>
       <tfoot><tr><td>${rows.length} Standorte</td><td></td><td></td><td class="num">${sum(rows.map((r) => r.mon))}</td><td class="num">${num(tWs)}</td><td class="num">${num(tPs)}</td></tr></tfoot>
@@ -464,13 +478,15 @@
     const psTotal = sum(PHASES.map((p) => p.personen && p.personen.ist));
     const flagged = PHASES.find((p) => (p.workshops && p.workshops.pruefen) || (p.personen && p.personen.pruefen));
     const flagHtml = flagged ? `<span class="mmc-flag" title="${esc(flagged.pruefHinweis || "Enthält Werte, die noch geprüft werden")}">*</span>` : "";
-    const first = PHASES[0], last = PHASES[PHASES.length - 1];
+    const first = PHASES[0], last = LAST;
+    // Bilanz = Innovationsphase: alles nach deren Ende wird abgeschnitten
+    const from = Math.min(...BEL.map((b) => b.a)), to = Math.min(Math.max(...BEL.map((b) => b.z)), ymIdx(D.meta.laufzeit.bis));
+    const mzIn = BEL.filter((b) => b.typ === "mz" && inRange(b, from, to));
     const maxMZ = Math.max(...PHASES.map((p) => p.medienzentren || 0));
-    const mzBel = new Set(BEL.filter((b) => b.typ === "mz").map((b) => b.ort)).size;
-    const mzMonths = sum(BEL.filter((b) => b.typ === "mz").map((b) => months(b, -Infinity, Infinity)));
+    const mzBel = new Set(mzIn.map((b) => b.ort)).size;
+    const mzMonths = sum(mzIn.map((b) => months(b, from, to)));
     const qualiPhase = [...PHASES].reverse().find((p) => p.qualifizierung);
     const quali = qualiPhase ? sum(qualiPhase.qualifizierung.map((q) => q.wert)) : null;
-    const from = Math.min(...BEL.map((b) => b.a)), to = Math.max(...BEL.map((b) => b.z));
 
     const kpis = `<div class="mmc-kpis">
       ${kpi({ icon: "truck", raw: `${first.makermobile}&thinsp;→&thinsp;<span data-count="${last.makermobile}">0</span>`, label: "Makermobile", sub: "vom Prototyp zur Flotte", accent: C.red })}
@@ -488,10 +504,13 @@
       const mods = p.module ? `<div class="mmc-mods">${D.module.map((m) => `<img src="${IMG(m.bild)}" alt="${esc(m.name)}" title="${esc(m.name)}" loading="lazy">`).join("")}</div>` : "";
       const facts = p.key === "aufbau"
         ? `<strong>1 Prototyp</strong> · ${p.module} Module + Studio`
+        : p.typ === "ausblick"
+        ? `<strong>Regelbetrieb</strong> ab ${PROD ? MONTHS[idxMonth(PROD)] + " " + idxYear(PROD) : ""}<br>
+           ${D.ausblick ? `${D.ausblick.lernformate.length} Lernformate · ${D.ausblick.netzwerk.length} Medienzentren im Netzwerk` : ""}`
         : `<strong>${p.makermobile} Makermobile</strong> · ${p.medienzentren ? `${p.medienzentren} Medienzentren` : "Medienzentren: —"}<br>
            <strong>${num(p.workshops.ist)}</strong> Workshops${flag(p.workshops, p.pruefHinweis)} · <strong>${num(p.personen.ist)}</strong> Personen${flag(p.personen, p.pruefHinweis)}`;
-      return `<div class="mmc-step">
-        <div class="mmc-eyebrow" style="color:#5c5c5c">${esc(p.tab)}</div>
+      return `<div class="mmc-step${p.typ === "ausblick" ? " is-future" : ""}">
+        <div class="mmc-eyebrow" style="color:#5c5c5c">${esc(p.tab)}${p.typ === "ausblick" ? " · Ausblick" : ""}</div>
         <div class="mmc-step-title mmc-h">${esc(p.label)}</div>
         <div class="mmc-fleet">${vans}</div>${mods}
         <div class="mmc-step-facts">${facts}</div></div>`;
@@ -512,7 +531,7 @@
       </div>` +
       card({ eyebrow: "Plan vs. Ist", title: "Zielerreichung", icon: "target", color: C.yellow2, body: zielBody, badge: tag(`Stand ${fmtDate(D.meta.datenstand)}`) }) +
       card({ eyebrow: "Standorte", title: `Belegungsplan ${idxYear(from)}–${idxYear(to)}`, icon: "calendar", color: C.blue, body: ganttBlock("g-all", "ort"),
-        badge: tag(`${BEL.filter((b) => b.typ === "mz").length} Stationierungen`) }) +
+        badge: tag(`${mzIn.length} Stationierungen`) }) +
       card({ eyebrow: "Standorte", title: "Nutzung je Medienzentrum", icon: "building", color: C.pink, body: mzTable(from, to) });
 
     wireGantt("g-all", from, to, null, "ort");
@@ -559,6 +578,127 @@
       card({ eyebrow: "Projektgeschichte", title: "Meilensteine der Aufbauphase", icon: "flag", color: C.pink, body: milestoneList(ms) });
   }
 
+  // ── Stationierung: Filter + Karte + Zeitstrahl (Jahres-Tabs und Ausblick) ──
+  function stationBlock(from, to, allText, ganttTitle) {
+    const oneYear = idxYear(from) === idxYear(to);
+    let monthOpts = `<option value="">${esc(allText)}</option>`;
+    for (let i = from; i <= to; i++) monthOpts += `<option value="${i}">${MONTHS[idxMonth(i)]}${oneYear ? "" : " " + idxYear(i)}</option>`;
+    const mmOpts = `<option value="">Alle Makermobile</option>` + D.makermobile.map((m) => `<option value="${m.id}">${esc(mmLabel(m))}</option>`).join("");
+    return `<div class="mmc-filters">
+        <div class="mmc-filter"><label for="f-month">Zeitraum</label><select id="f-month">${monthOpts}</select></div>
+        <div class="mmc-filter"><label for="f-mm">Makermobil</label><select id="f-mm">${mmOpts}</select></div>
+        <div id="f-summary" class="mmc-filter-sum"></div>
+      </div>
+      <div id="mmc-map" class="mmc-map"></div>
+      <h4 class="mmc-h mmc-sub-h">${esc(ganttTitle)}</h4>
+      ${ganttBlock("g-year", "mm")}`;
+  }
+
+  function wireStation(from, to, { defaultNow, allLabel, network } = {}) {
+    const fMonth = root.querySelector("#f-month"), fMM = root.querySelector("#f-mm"), fSum = root.querySelector("#f-summary");
+    const getMM = () => (fMM.value ? Number(fMM.value) : null);
+    const now = new Date(), nowIdx = now.getFullYear() * 12 + now.getMonth();
+    if (defaultNow && nowIdx >= from && nowIdx <= to) fMonth.value = String(nowIdx);
+    const redrawGantt = wireGantt("g-year", from, to, getMM, "mm");
+    function update() {
+      const mi = fMonth.value ? Number(fMonth.value) : null;
+      drawMap("mmc-map", from, to, mi, getMM());
+      if (network) drawNetwork();
+      const a = mi ?? from, z = mi ?? to;
+      const act = BEL.filter((b) => inRange(b, a, z) && (!getMM() || b.mm === getMM()));
+      const mz = new Set(act.filter((b) => b.typ === "mz").map((b) => b.ort)).size;
+      const mmN = new Set(act.filter((b) => b.typ !== "service").map((b) => b.mm)).size;
+      const insp = new Set(act.filter((b) => b.typ === "service").map((b) => b.mm)).size;
+      fSum.innerHTML = `<strong>${mi != null ? `${MONTHS[idxMonth(mi)]} ${idxYear(mi)}` : esc(allLabel)}:</strong> ${mmN} Makermobil(e) im Einsatz · ${mz} Medienzentren${insp ? ` · ${insp} in Inspektion` : ""}`;
+      redrawGantt();
+    }
+    fMonth.addEventListener("change", update);
+    fMM.addEventListener("change", update);
+    update();
+  }
+
+  // Medienzentren-Netzwerk als kleine Punkte auf der Karte (Ausblick)
+  function drawNetwork() {
+    if (!map || !D.ausblick || !D.ausblick.netzwerk) return;
+    D.ausblick.netzwerk.forEach((n) => {
+      L.circleMarker(n.coords, { radius: 5, color: C.ink, weight: 1.5, fillColor: "#fff", fillOpacity: 1 })
+        .bindTooltip(`${esc(n.name)} (${esc(n.ort)})`, { direction: "top" })
+        .addTo(map._mmc);
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════════════
+  //  ANSICHT: AUSBLICK & VERSTETIGUNG (Produktivphase)
+  // ════════════════════════════════════════════════════════════════════
+  function renderAusblick(p) {
+    const A = D.ausblick || { lernformate: [], netzwerk: [], planung: [], ziele: {} };
+    const prodY = PROD ? idxYear(PROD) : LZ_BIS + 1;
+    // Zeitraum: ab Beginn der laufenden Stationierungen bis Ende des ersten Produktivjahres
+    const tail = BEL.filter((b) => b.z >= PROD);
+    const from = tail.length ? Math.min(...tail.filter((b) => b.typ !== "team").map((b) => b.a)) : PROD - 4;
+    const to = Math.max(PROD + 11, ...tail.map((b) => b.z));
+    const into = tail.filter((b) => b.typ === "mz");
+    const lastMz = into.length ? Math.max(...into.map((b) => b.z)) : null;
+    const active = new Set(BEL.filter((b) => b.typ !== "service" && b.z >= PROD).map((b) => b.mm)).size;
+
+    // Phasen-Leiste 2023 … 2027
+    const years = [];
+    for (let y = LZ_VON; y <= prodY; y++) years.push(y);
+    const strip = `<div class="mmc-phases" style="--n:${years.length}">
+        ${years.map((y) => `<div class="mmc-phase-year${y >= prodY ? " is-prod" : ""}">${y}</div>`).join("")}
+        <div class="mmc-phase-bar is-innov" style="grid-column:1 / span ${years.length - 1}">
+          <span class="mmc-eyebrow">Innovationsphase ${LZ_VON}–${LZ_BIS}</span><span>Entwicklung · Erprobung · Pilotbetrieb</span></div>
+        <div class="mmc-phase-bar is-prod"><span class="mmc-eyebrow">Produktivphase</span><span>Regelbetrieb ab ${prodY}</span></div>
+      </div>
+      <p style="max-width:860px;margin-top:22px;font-size:1.02rem">${esc(A.text || "")}</p>`;
+
+    const kpis = `<div class="mmc-kpis">
+      ${kpi({ icon: "truck", value: LAST.makermobile, label: "Makermobile", sub: `${active} mit Einsätzen bis ${prodY} geplant`, accent: C.red })}
+      ${kpi({ icon: "network", value: A.netzwerk.length || "—", label: "Medienzentren", sub: "im Netzwerk (makermobil.de)", accent: C.pink })}
+      ${kpi({ icon: "book", value: A.lernformate.length || "—", label: "Lernformate", sub: A.lernformate.map((l) => esc(l.name)).join(" · "), accent: C.green })}
+      ${kpi({ icon: "calendar", value: into.length, label: `Einsätze bis ${prodY}`, sub: lastMz ? `längste Planung bis ${MONTHS[idxMonth(lastMz)]} ${idxYear(lastMz)}` : "", accent: C.blue })}
+    </div>`;
+
+    const formate = `<div class="mmc-formats">${A.lernformate.map((l) => `<div class="mmc-format">
+        <div class="mmc-format-head">${hexIcon(l.icon, l.color)}${tag(esc(l.status), /neu/i.test(l.status))}</div>
+        <h4 class="mmc-h">${esc(l.name)}</h4>
+        <p>${esc(l.text)}</p>
+        <div class="mmc-format-num">${l.anzahl != null ? `<strong>${num(l.anzahl)}</strong> ${esc(l.einheit)}` : `<strong>${prodY}</strong>`}</div>
+        <div class="mmc-format-detail">${esc(l.detail || "")}</div>
+      </div>`).join("")}</div>`;
+
+    const planung = (A.planung || []).length ? `<div class="mmc-note"><strong>In Planung:</strong> ${A.planung.map((x) => `${mmTag(mmById(x.mm))} ${esc(x.text)}${x.zeitraum ? ` (${esc(x.zeitraum)})` : " – Zeitraum noch offen"}`).join("<br>")}</div>` : "";
+
+    const activeOrte = new Set(BEL.filter((b) => b.typ === "mz" && b.z >= PROD).map((b) => ort(b.ort).name));
+    const netz = `<div class="mmc-netz">${A.netzwerk.map((n) => {
+        const hit = [...activeOrte].find((o) => n.name.includes(o) || n.ort === o);
+        const mmHit = hit ? [...new Set(BEL.filter((b) => b.typ === "mz" && b.z >= PROD && ort(b.ort).name === hit).map((b) => b.mm))].map(mmById) : [];
+        return `<div class="mmc-netz-item${mmHit.length ? " is-active" : ""}"><span class="mmc-dot" style="background:${mmHit.length ? mmHit[0].color : "#fff"}"></span>
+          <div><strong>${esc(n.name)}</strong><span>${esc(n.ort)}</span></div>${mmHit.map(mmTag).join("")}</div>`;
+      }).join("")}</div>`;
+
+    const Z = A.ziele || {};
+    const ziele = `<div class="mmc-kpis" style="margin-bottom:0">
+      ${kpi({ icon: "target", value: Z.workshops ?? "—", label: "Workshops (Plan)", sub: Z.workshops == null ? "Planwert folgt" : "", accent: C.green })}
+      ${kpi({ icon: "users", value: Z.personen ?? "—", label: "Personen (Plan)", sub: Z.personen == null ? "Planwert folgt" : "", accent: C.yellow2 })}
+      ${kpi({ icon: "building", value: Z.medienzentren ?? "—", label: "Medienzentren (Plan)", sub: Z.medienzentren == null ? "Planwert folgt" : "", accent: C.pink })}
+    </div>`;
+
+    view.innerHTML =
+      card({ eyebrow: "Verstetigung", title: `Von der Innovation in den Regelbetrieb`, icon: "rocket", color: C.pink, body: strip }) +
+      kpis +
+      card({ eyebrow: "Angebot", title: "Drei Lernformate", icon: "book", color: C.green, body: formate,
+        badge: `<a class="mmc-tag" href="https://makermobil.de" style="text-decoration:none">makermobil.de ↗</a>` }) +
+      card({ eyebrow: "Übergang in die Produktivphase", title: `Stationierung ${idxLabel(from)} – ${idxLabel(to)}`, icon: "pin", color: C.blue,
+        body: stationBlock(from, to, "Gesamter Zeitraum", "Zeitstrahl") + planung }) +
+      card({ eyebrow: "Netzwerk", title: "Medienzentren im Netzwerk", icon: "network", color: C.pink, body: netz,
+        badge: tag(`${A.netzwerk.length} Medienzentren`) }) +
+      card({ eyebrow: "Ziele", title: `Planwerte ${prodY}`, icon: "target", color: C.green, body: ziele +
+        `<div class="mmc-note">Die Planwerte für die Produktivphase werden ergänzt, sobald sie feststehen.</div>` });
+
+    wireStation(from, to, { defaultNow: false, allLabel: `${idxLabel(from)} – ${idxLabel(to)}`, network: true });
+  }
+
   // ════════════════════════════════════════════════════════════════════
   //  ANSICHT: JAHR (2025, 2026)
   // ════════════════════════════════════════════════════════════════════
@@ -582,16 +722,7 @@
           (p.planDetail ? `<div class="mmc-note">Plan: ${esc(p.planDetail)}</div>` : "") })
       : (hint ? `<div class="mmc-note" style="margin:-8px 0 24px"><strong style="color:${C.red}">*</strong> ${esc(hint)}</div>` : "");
 
-    const monthOpts = `<option value="">Ganzes Jahr</option>` + MONTHS.map((m, i) => `<option value="${from + i}">${m}</option>`).join("");
-    const mmOpts = `<option value="">Alle Makermobile</option>` + D.makermobile.map((m) => `<option value="${m.id}">${esc(mmLabel(m))}</option>`).join("");
-    const station = `<div class="mmc-filters">
-        <div class="mmc-filter"><label for="f-month">Zeitraum</label><select id="f-month">${monthOpts}</select></div>
-        <div class="mmc-filter"><label for="f-mm">Makermobil</label><select id="f-mm">${mmOpts}</select></div>
-        <div id="f-summary" class="mmc-filter-sum"></div>
-      </div>
-      <div id="mmc-map" class="mmc-map"></div>
-      <h4 class="mmc-h mmc-sub-h">Zeitstrahl ${y}</h4>
-      ${ganttBlock("g-year", "mm")}`;
+    const station = stationBlock(from, to, "Ganzes Jahr", `Zeitstrahl ${y}`);
 
     const typen = p.workshopTypen ? (() => {
       const total = sum(p.workshopTypen.map((t) => t.wert));
@@ -625,26 +756,7 @@
         badge: tag(`${num(sum(p.qualifizierung.map((q) => q.wert)))} Personen`) }) : "") +
       card({ eyebrow: "Standorte", title: `Nutzung je Medienzentrum ${y}`, icon: "building", color: C.pink, body: mzTable(from, to) });
 
-    // Stationierung: Karte + Zeitstrahl teilen sich die Filter
-    const fMonth = root.querySelector("#f-month"), fMM = root.querySelector("#f-mm"), fSum = root.querySelector("#f-summary");
-    const getMM = () => (fMM.value ? Number(fMM.value) : null);
-    const now = new Date();
-    if (now.getFullYear() === y) fMonth.value = String(from + now.getMonth());
-    const redrawGantt = wireGantt("g-year", from, to, getMM, "mm");
-    function update() {
-      const mi = fMonth.value ? Number(fMonth.value) : null;
-      drawMap("mmc-map", from, to, mi, getMM());
-      const a = mi ?? from, z = mi ?? to;
-      const act = BEL.filter((b) => inRange(b, a, z) && (!getMM() || b.mm === getMM()));
-      const mz = new Set(act.filter((b) => b.typ === "mz").map((b) => b.ort)).size;
-      const mmN = new Set(act.filter((b) => b.typ !== "service").map((b) => b.mm)).size;
-      const insp = new Set(act.filter((b) => b.typ === "service").map((b) => b.mm)).size;
-      fSum.innerHTML = `<strong>${mi != null ? `${MONTHS[idxMonth(mi)]} ${y}` : y}:</strong> ${mmN} Makermobil(e) im Einsatz · ${mz} Medienzentren${insp ? ` · ${insp} in Inspektion` : ""}`;
-      redrawGantt();
-    }
-    fMonth.addEventListener("change", update);
-    fMM.addEventListener("change", update);
-    update();
+    wireStation(from, to, { defaultNow: true, allLabel: String(y) });
 
     if (hasEvents) barChart("ch-mm", D.makermobile.map((m) => [m.name, m.farbe]), p.veranstaltungenProMM, D.makermobile.map((m) => m.color), { unit: "Veranstaltungen" });
     if (p.anfragenProMonat) {

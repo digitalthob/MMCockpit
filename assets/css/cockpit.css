@@ -193,7 +193,7 @@ body.mmc-standalone { margin: 0; background: #F7F7F7; }
   border-radius: 8px; border: 1px dashed var(--line);
 }
 .mmc-flag { color: var(--mm-red); font-weight: 700; cursor: help; margin-left: 2px; font-size: 0.55em; vertical-align: super; font-family: var(--font-body); }
-.mmc-sub-h { font-size: 1rem; margin: 26px 0 12px; }
+.mmc .mmc-sub-h { font-size: 1rem; margin: 28px 0 12px; }
 
 /* ── FORTSCHRITT ── */
 .mmc-progress { margin-bottom: 18px; }
@@ -331,6 +331,39 @@ body.mmc-standalone { margin: 0; background: #F7F7F7; }
 .mmc-detail-grid span { display: block; font-size: 0.64rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
 .mmc-detail-grid strong { font-family: var(--font-head); font-size: 1.05rem; }
 
+/* Produktivphase im Zeitstrahl + Fortsetzungen über den Rand */
+.mmc-g-future { position: absolute; top: 0; bottom: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(203, 84, 155, 0.06), rgba(203, 84, 155, 0.06) 6px, transparent 6px, transparent 12px); border-left: 2px dashed var(--mm-pink); pointer-events: none; }
+.mmc-g-futlabel { position: absolute; top: 5px; padding-left: 46px; font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--mm-pink); white-space: nowrap; }
+.mmc-g-bar.cont-r { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right-style: dotted; }
+.mmc-g-bar.cont-l { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left-style: dotted; }
+
+/* ── AUSBLICK ── */
+.mmc-step.is-future { background: repeating-linear-gradient(135deg, rgba(203, 84, 155, 0.06), rgba(203, 84, 155, 0.06) 6px, transparent 6px, transparent 12px); border-radius: 8px; }
+.mmc-step.is-future .mmc-step-title { color: var(--mm-pink); }
+.mmc-phases { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 8px 6px; }
+.mmc-phase-year { font: 700 1.05rem var(--font-head); letter-spacing: -0.03em; color: var(--ink); padding-left: 4px; border-left: 1.5px solid var(--line); }
+.mmc-phase-year.is-prod { color: var(--mm-pink); border-left: 2px dashed var(--mm-pink); }
+.mmc-phase-bar { min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1.5px solid var(--ink); border-radius: 8px; font-size: 0.82rem; }
+.mmc-phase-bar.is-innov { background: var(--mm-yellow); }
+.mmc-phase-bar.is-prod { background: var(--mm-pink); color: #fff; box-shadow: 5px 5px 0 var(--ink); }
+.mmc-phase-bar.is-prod .mmc-eyebrow { color: #fff; }
+.mmc-formats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.mmc-format { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 10px; background: #fff; }
+.mmc-format-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.mmc-format h4 { font-size: 1.3rem; }
+.mmc-format p { font-size: 0.9rem; color: var(--muted); flex: 1; }
+.mmc-format-num { font-size: 0.9rem; }
+.mmc-format-num strong { font: 700 1.8rem var(--font-head); letter-spacing: -0.04em; color: var(--ink); margin-right: 4px; }
+.mmc-format-detail { font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 8px; }
+.mmc-netz { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px 16px; }
+.mmc-netz-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 0.84rem; }
+.mmc-netz-item .mmc-dot { width: 12px; height: 13px; }
+.mmc-netz-item > div { flex: 1; min-width: 0; }
+.mmc-netz-item strong { display: block; font-weight: 600; color: var(--ink); }
+.mmc-netz-item span:not(.mmc-dot):not(.mmc-tag) { font-size: 0.74rem; color: var(--muted); }
+.mmc-netz-item.is-active { background: var(--mm-yellow-soft); }
+.mmc-netz-item:not(.is-active) .mmc-dot { background: var(--line) !important; }
+
 /* ── TABELLEN ── */
 .mmc-table-wrap { overflow-x: auto; }
 .mmc-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
@@ -385,6 +418,8 @@ body.mmc-standalone { margin: 0; background: #F7F7F7; }
   .mmc-step + .mmc-step { border-left: 0; border-top: 1.5px dashed var(--line); }
 }
 @media (max-width: 640px) {
+  .mmc-phase-year { display: none; }
+  .mmc-phase-bar { grid-column: 1 / -1 !important; }
   .mmc-top { padding: 12px 16px; }
   .mmc-top-logo { height: 30px; }
   .mmc-top-link { display: none; }
