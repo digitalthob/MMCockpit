@@ -43,6 +43,12 @@
     laptop: '<rect x="3" y="4" width="18" height="12" rx="2"/><line x1="1" y1="20" x2="23" y2="20"/>',
     rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
     network: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',
+    cloud: '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
+    lifebuoy: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/>',
+    pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
+    mic: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+    compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+    key: '<circle cx="7.5" cy="15.5" r="5.5"/><path d="M11.4 11.6L21 2M16 7l3 3M19 4l2 2"/>',
     list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
   };
   const hexIcon = (name, color, iconColor) =>
@@ -469,6 +475,37 @@
     }));
   }
 
+  // ── Digitale Plattform (Wabe + Erklärungen + Arbeitsweg) ──────────
+  function plattformBlock() {
+    const P = D.plattform;
+    if (!P) return "";
+    const svg = (name, color) => `<svg viewBox="0 0 24 24" style="stroke:${color}">${ICONS[name] || ""}</svg>`;
+    const qPhase = [...PHASES].reverse().find((p) => p.qualifizierung);
+    const badges = qPhase ? sum(qPhase.qualifizierung.filter((q) => (P.badgeFuer || []).includes(q.name)).map((q) => q.wert)) : null;
+    const zahl = (d) => (d.zahlAus === "badges" ? badges : d.zahl ?? null);
+    const pos = [[16.67, 0], [50, 0], [66.67, 30], [50, 60], [16.67, 60], [0, 30]]; // ab oben links im Uhrzeigersinn
+    const wabe = `<div class="mmc-comb" role="img" aria-label="Ein Login für ${P.dienste.length} Dienste: ${P.dienste.map((d) => esc(d.verb)).join(", ")}">
+        <div class="mmc-comb-hex is-center" style="left:33.33%;top:30%"><div>${svg("key", "#fff")}<strong>Ein Login</strong><span>makermobil.de</span></div></div>
+        ${P.dienste.slice(0, 6).map((d, i) => { const z = zahl(d); const fg = textOn(d.color); return `<div class="mmc-comb-hex" style="left:${pos[i][0]}%;top:${pos[i][1]}%;background:${d.color};color:${fg}">
+          <div>${svg(d.icon, fg)}<strong>${esc(d.verb)}</strong>${z != null ? `<em>${num(z)}</em>` : ""}</div></div>`; }).join("")}
+      </div>`;
+    const liste = `<div class="mmc-svc">${P.dienste.map((d) => { const z = zahl(d); return `<div class="mmc-svc-item">
+        ${hexIcon(d.icon, d.color)}
+        <div class="mmc-svc-body">
+          <div class="mmc-svc-head"><strong class="mmc-h">${esc(d.verb)}</strong><span class="mmc-tag">${esc(d.tool)}</span></div>
+          <p>${esc(d.text)}</p>
+          ${z != null ? `<div class="mmc-svc-num"><b>${num(z)}</b> ${esc(d.einheit || "")}</div>` : d.status ? `<div class="mmc-svc-num"><span class="mmc-tag mmc-tag-warn">✓ ${esc(d.status)}</span></div>` : ""}
+          ${d.detail ? `<div class="mmc-svc-detail">${esc(d.detail)}</div>` : ""}
+        </div></div>`; }).join("")}</div>`;
+    const weg = (P.weg || []).length ? `<h4 class="mmc-h mmc-sub-h">So arbeitet ein Maker Teacher mit der Plattform</h4>
+      <ol class="mmc-flow" style="--n:${P.weg.length}">${P.weg.map((w, i) => `<li>
+        <span class="mmc-flow-hex">${svg(w.icon, "#161616")}<i>${i + 1}</i></span>
+        <strong>${esc(w.schritt)}</strong><span class="mmc-tag">${esc(w.tool)}</span></li>`).join("")}</ol>` : "";
+    return card({ eyebrow: `Digitale Infrastruktur · seit ${P.seit ? fmtMsDate(P.seit) : ""}`, title: esc(P.titel), icon: "network", color: C.blue,
+      badge: tag(`${P.dienste.length} Dienste · 1 Login`),
+      body: `<p class="mmc-svc-lead">${esc(P.text)}</p><div class="mmc-platform">${wabe}${liste}</div>${weg}` });
+  }
+
   // ════════════════════════════════════════════════════════════════════
   //  ANSICHT: GESAMTBILANZ
   // ════════════════════════════════════════════════════════════════════
@@ -525,6 +562,7 @@
 
     view.innerHTML = kpis +
       card({ eyebrow: "Entwicklung", title: `Von 1 Prototyp zu ${last.makermobile} Makermobilen`, icon: "truck", color: C.red, body: journey }) +
+      plattformBlock() +
       `<div class="mmc-grid-2">
         ${card({ eyebrow: "Projektgeschichte", title: "Meilensteine", icon: "flag", color: C.pink, body: milestoneList(D.meilensteine) })}
         ${card({ eyebrow: "Wirkung", title: "Entwicklung je Jahr", icon: "trend", color: C.green, body: chartBox("ch-dev", true) + (flagged ? `<div class="mmc-note"><strong style="color:${C.red}">*</strong> ${esc(flagged.pruefHinweis || "")}</div>` : "") })}

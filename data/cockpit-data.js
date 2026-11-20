@@ -131,6 +131,8 @@ window.MM_COCKPIT_DATA = {
       text: "Übernahme von 1 Prototyp-Fahrzeug, 5 Prototyp-Modulen (3D-Druck, Grafik, Lasercutter, Mechatronik, Sticken) und Studio." },
     { datum: "2024/25", titel: "Weiterentwickeln, verbessern, testen",
       text: "Fahrzeug und Module werden im Praxiseinsatz weiterentwickelt und erprobt." },
+    { datum: "2025-01", titel: "Start der digitalen Makermobil-Plattform",
+      text: "Ein Login für Cloud, Support, digitale Verträge, Podcast und Badges – seitdem monatlich weiterentwickelt und an die Anforderungen angepasst." },
     { datum: "2025",    titel: "Testphase & erste Workshops",
       text: "3 Makermobile im Einsatz, erste Workshops mit Schulen und Medienzentren." },
     { datum: "2026",    titel: "Pilotjahr: 8 Makermobile",
@@ -229,10 +231,49 @@ window.MM_COCKPIT_DATA = {
     },
   ],
 
+  /* ── Digitale Makermobil-Plattform ─────────────────────────────────
+     Bewusst nicht technisch beschrieben (für den Abschlussbericht).
+     zahl: feste Zahl · zahlAus: "badges" = Summe der Qualifizierungen aus `badgeFuer` */
+  plattform: {
+    titel: "Mehr als Fahrzeuge: die digitale Makermobil-Plattform",
+    text: "Ein Login für alles, was Maker Teacher für ihre Arbeit brauchen – erreichbar über makermobil.de. Seit Anfang 2025 in Betrieb und seitdem jeden Monat weiterentwickelt und an die Anforderungen angepasst.",
+    seit: "2025-01",
+    badgeFuer: ["Maker Assistant", "Maker Teacher"],
+    dienste: [
+      { verb: "Entdecken & buchen", tool: "makermobil.de", icon: "compass", color: "#F7DB67",
+        text: "Lernformate, Anleitungen und Buchung der Makermobile an einem Ort.",
+        zahl: 17, einheit: "Warm Ups online" },
+      { verb: "Material teilen", tool: "Cloud", icon: "cloud", color: "#4BA1D3",
+        text: "Anleitungen, Vorlagen und Projektdateien zum Austausch unter Maker Teachern.",
+        zahlAus: "badges", einheit: "Maker Teacher & Assistants angemeldet" },
+      { verb: "Hilfe bekommen", tool: "Ticketsystem", icon: "lifebuoy", color: "#EDA554",
+        text: "Fragen und Probleme digital melden – nichts geht verloren, alles ist nachvollziehbar.",
+        status: "digitalisiert" },
+      { verb: "Papierlos vereinbaren", tool: "DocuSeal", icon: "pen", color: "#809F33",
+        text: "Verträge und Vereinbarungen digital unterschreiben – DSGVO-konform.",
+        status: "DSGVO-konform" },
+      { verb: "Hören & produzieren", tool: "Podcast", icon: "mic", color: "#CB549B",
+        text: "Podcasts aus dem Studio im Makermobil.",
+        zahl: 2, einheit: "Staffeln", detail: "„Changelog Makerspace“ · „FSJ digital – Jugendmedienschutz“" },
+      { verb: "Wirkung sichtbar machen", tool: "Open Badges", icon: "award", color: "#B52726",
+        text: "Qualifizierungen als digitale Badges – nachweisbar und messbar.",
+        zahlAus: "badges", einheit: "Badges vergeben" },
+    ],
+    // So arbeitet ein Maker Teacher mit der Plattform
+    weg: [
+      { schritt: "Qualifizieren", tool: "Badge", icon: "award" },
+      { schritt: "Material holen", tool: "Cloud", icon: "cloud" },
+      { schritt: "Makermobil buchen", tool: "makermobil.de", icon: "compass" },
+      { schritt: "Workshop durchführen", tool: "Makermobil", icon: "truck" },
+      { schritt: "Fragen klären", tool: "Support", icon: "lifebuoy" },
+      { schritt: "Erfahrungen teilen", tool: "Podcast", icon: "mic" },
+    ],
+  },
+
   /* ── Ausblick & Verstetigung (Produktivphase ab 2027) ──────────────
      Quelle: makermobil.de (Stand 20.11.2026). Planwerte ergänzen, sobald bekannt. */
   ausblick: {
-    text: "Mit dem Ende der Innovationsphase gehen die Makermobile 2027 in die Produktivphase. Was in der Entwicklungsphase entstanden ist – Flotte, Module, Lernformate, Materialien und das Netzwerk der Medienzentren – wird zum Regelangebot für Schulen in Baden-Württemberg.",
+    text: "Mit dem Ende der Innovationsphase gehen die Makermobile 2027 in die Produktivphase. Was in der Entwicklungsphase entstanden ist – Flotte, Module, Lernformate, Materialien, die digitale Plattform und das Netzwerk der Medienzentren – wird zum Regelangebot für Schulen in Baden-Württemberg.",
 
     // Planwerte Produktivphase 2027 (null = noch offen → „Daten folgen“)
     ziele: {
